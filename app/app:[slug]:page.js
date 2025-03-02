@@ -14,37 +14,50 @@ const client = createClient({
 export default async function Page({ params }) {
   const { slug } = params;
 
-  // Fetch the specific page by slug
-  const res = await client.getEntries({
-    content_type: "page",
-    "fields.slug": slug, // Dynamically fetch based on slug
-    include: 2, // Fetch referenced entries
-  });
+  try {
+    // Fetch the specific page by slug
+    const res = await client.getEntries({
+      content_type: "page",
+      "fields.slug": slug,
+      include: 2,
+    });
 
-  if (!res.items.length) return notFound();
+    if (!res.items.length) {
+      console.error(`❌ No content found for slug: ${slug}`);
+      return notFound();
+    }
 
-  const page = res.items[0].fields;
+    const page = res.items[0].fields;
 
-  return (
-    <div className="text-center p-12">
-      <h1 className="text-4xl font-bold mb-6">{page.title || "Untitled Page"}</h1>
+    return (
+      <div className="text-center p-12">
+        <h1 className="text-4xl font-bold mb-6">{page.title || "Untitled Page"}</h1>
 
-      {/* ✅ Loop Through Content Blocks */}
-      {page.contentBlocks &&
-        page.contentBlocks.map((block) => {
-          switch (block.sys.contentType.sys.id) {
-            case "heroSection":
-              return <HeroSection key={block.sys.id} hero={block} />;
-            case "featureItem":
-              return <FeatureItem key={block.sys.id} feature={block} />;
-            case "teamMember":
-              return <TeamMember key={block.sys.id} member={block} />;
-            case "button":
-              return <Button key={block.sys.id} button={block} />;
-            default:
+        {page.contentBlocks &&
+          page.contentBlocks.map((block) => {
+            if (!block || !block.sys?.contentType) {
+              console.warn("⚠ Skipping undefined content block.");
               return null;
-          }
-        })}
-    </div>
-  );
+            }
+
+            switch (block.sys.contentType.sys.id) {
+              case "heroSection":
+                return <HeroSection key={block.sys.id} hero={block} />;
+              case "featureItem":
+                return <FeatureItem key={block.sys.id} feature={block} />;
+              case "teamMember":
+                return <TeamMember key={block.sys.id} member={block} />;
+              case "button":
+                return <Button key={block.sys.id} button={block} />;
+              default:
+                console.warn("⚠ Unknown content type:", block.sys.contentType.sys.id);
+                return null;
+            }
+          })}
+      </div>
+    );
+  } catch (error) {
+    console.error(`❌ Error fetching content for slug: ${slug}`, error);
+    return <p className="text-red-500 text-center">Error loading content: {error.message}</p>;
+  }
 }

@@ -13,14 +13,17 @@ const client = createClient({
 
 export default async function Home() {
   try {
-    // Fetch the "Insights Portal" page
+    // Fetch Insights Portal page
     const res = await client.getEntries({
       content_type: "page",
-      "fields.slug": "Insights-Portal", // UPDATED: Ensure this matches Contentful exactly
-      include: 2, // Fetch referenced entries
+      "fields.slug": "Insights-Portal",
+      include: 2,
     });
 
-    if (!res.items.length) return notFound();
+    if (!res.items.length) {
+      console.error("❌ No content found for Insights Portal.");
+      return <p className="text-red-500 text-center">No content available.</p>;
+    }
 
     const page = res.items[0].fields;
 
@@ -28,9 +31,13 @@ export default async function Home() {
       <div className="text-center p-12">
         <h1 className="text-4xl font-bold mb-6">{page.title || "Untitled Page"}</h1>
 
-        {/* ✅ Loop Through Content Blocks */}
         {page.contentBlocks &&
           page.contentBlocks.map((block) => {
+            if (!block || !block.sys?.contentType) {
+              console.warn("⚠ Skipping undefined content block.");
+              return null;
+            }
+
             switch (block.sys.contentType.sys.id) {
               case "heroSection":
                 return <HeroSection key={block.sys.id} hero={block} />;
@@ -41,12 +48,14 @@ export default async function Home() {
               case "button":
                 return <Button key={block.sys.id} button={block} />;
               default:
+                console.warn("⚠ Unknown content type:", block.sys.contentType.sys.id);
                 return null;
             }
           })}
       </div>
     );
   } catch (error) {
-    return <p className="text-red-500 text-center mt-10">Error loading content: {error.message}</p>;
+    console.error("❌ Error fetching content:", error);
+    return <p className="text-red-500 text-center">Error loading content: {error.message}</p>;
   }
 }
