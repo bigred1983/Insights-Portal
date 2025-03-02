@@ -10,4 +10,5 @@ const nextConfig = {
     reactStrictMode: true, // Helps catch potential errors
   };
   
-  export default nextConfig;  
+  export default nextConfig;
+  
