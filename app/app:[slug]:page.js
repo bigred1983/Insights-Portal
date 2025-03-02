@@ -14,11 +14,11 @@ const client = createClient({
 export default async function Page({ params }) {
   const { slug } = params;
 
-  // Fetch the specific page by slug and include linked content
+  // Fetch the specific page by slug
   const res = await client.getEntries({
     content_type: "page",
-    "fields.slug": slug,
-    include: 2,
+    "fields.slug": slug, // Dynamically fetch based on slug
+    include: 2, // Fetch referenced entries
   });
 
   if (!res.items.length) return notFound();
