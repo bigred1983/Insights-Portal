@@ -1,8 +1,8 @@
 import Image from "next/image";
 
 export default function Button({ button }) {
-  // ✅ Log the image field to check what Contentful returns
-  console.log("Button Image Data:", button.fields.image);
+  // ✅ Log the entire button object to check what Contentful returns
+  console.log("Button Data:", button);
 
   // ✅ Ensure the image field exists before rendering
   const hasImage = button.fields.image && button.fields.image.fields?.file?.url;
@@ -22,7 +22,7 @@ export default function Button({ button }) {
       
       {/* ✅ The button itself */}
       <a
-        href={button.fields.url}
+        href={button.fields.url || "#"}
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center"
         target="_blank"
         rel="noopener noreferrer"
