@@ -1,6 +1,9 @@
 import Image from "next/image";
 
 export default function Button({ button }) {
+  // ✅ Log the image field to check what Contentful returns
+  console.log("Button Image Data:", button.fields.image);
+
   // ✅ Ensure the image field exists before rendering
   const hasImage = button.fields.image && button.fields.image.fields?.file?.url;
   const imageUrl = hasImage ? `https:${button.fields.image.fields.file.url}` : null;
