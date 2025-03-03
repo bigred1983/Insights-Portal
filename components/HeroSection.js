@@ -22,13 +22,18 @@ export default function HeroSection({ hero }) {
       {/* ✅ Render Buttons (if available) */}
       {hero.fields.buttons && hero.fields.buttons.length > 0 && (
         <div className="absolute bottom-10 flex gap-4">
-          {hero.fields.buttons.map((button) => (
-            <Link key={button.sys.id} href={button.fields.url}>
-              <span className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                {button.fields.label}
-              </span>
-            </Link>
-          ))}
+          {hero.fields.buttons.map((button) => {
+            const buttonUrl = button.fields.url || '#'; // ✅ Ensure URL is always defined
+            const buttonLabel = button.fields.label || "Click Here"; // ✅ Default label
+
+            return (
+              <Link key={button.sys.id} href={buttonUrl}>
+                <span className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                  {buttonLabel}
+                </span>
+              </Link>
+            );
+          })}
         </div>
       )}
     </div>
