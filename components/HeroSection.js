@@ -1,41 +1,50 @@
-import Image from 'next/image';
-import Link from 'next/link';
+import Image from "next/image";
+import Link from "next/link";
 
 export default function HeroSection({ hero }) {
+  // ✅ Ensure the background image exists before rendering
+  const hasBackgroundImage =
+    hero.fields.backgroundImage && hero.fields.backgroundImage.fields?.file?.url;
+  const backgroundImageUrl = hasBackgroundImage
+    ? `https:${hero.fields.backgroundImage.fields.file.url}`
+    : null;
+
   return (
-    <div className="relative w-full h-96 flex flex-col items-center justify-center text-white bg-black my-6 p-6">
+    <div className="relative w-full h-96 flex flex-col items-center justify-center text-white bg-blue-500 my-6 p-6 overflow-hidden">
       {/* ✅ Background Image */}
-      {hero.fields.backgroundImage && (
+      {hasBackgroundImage && (
         <Image
-          src={`https:${hero.fields.backgroundImage.fields.file.url}`}
+          src={backgroundImageUrl}
           alt={hero.fields.title || "Hero Image"}
           layout="fill"
           objectFit="cover"
-          className="opacity-50"
+          className="absolute top-0 left-0 w-full h-full object-cover opacity-50"
         />
       )}
 
-      {/* ✅ Hero Title & Subtitle */}
-      <h2 className="text-3xl font-bold absolute">{hero.fields.title || "No title available"}</h2>
-      <p className="text-lg absolute mt-12">{hero.fields.subtitle || "No subtitle available"}</p>
+      {/* ✅ Hero Content Container */}
+      <div className="relative z-10 text-center px-6">
+        <h2 className="text-3xl font-bold">{hero.fields.title || "No title available"}</h2>
+        <p className="text-lg mt-2">{hero.fields.subtitle || "No subtitle available"}</p>
 
-      {/* ✅ Render Buttons (if available) */}
-      {hero.fields.buttons && hero.fields.buttons.length > 0 && (
-        <div className="absolute bottom-10 flex gap-4">
-          {hero.fields.buttons.map((button) => {
-            const buttonUrl = button.fields.url || '#'; // ✅ Ensure URL is always defined
-            const buttonLabel = button.fields.label || "Click Here"; // ✅ Default label
+        {/* ✅ Render Buttons (if available) */}
+        {hero.fields.buttons && hero.fields.buttons.length > 0 && (
+          <div className="mt-6 flex gap-4 justify-center">
+            {hero.fields.buttons.map((button) => {
+              const buttonUrl = button.fields.url || "#"; // ✅ Ensure URL is always defined
+              const buttonLabel = button.fields.label || "Click Here"; // ✅ Default label
 
-            return (
-              <Link key={button.sys.id} href={buttonUrl}>
-                <span className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                  {buttonLabel}
-                </span>
-              </Link>
-            );
-          })}
-        </div>
-      )}
+              return (
+                <Link key={button.sys.id} href={buttonUrl}>
+                  <span className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    {buttonLabel}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
