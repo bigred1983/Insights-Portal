@@ -5,15 +5,29 @@ import FeatureItem from '@/components/FeatureItem';
 import TeamMember from '@/components/TeamMember';
 import Button from '@/components/Button';
 
-// ✅ Set up Contentful client with correct environment
+// ✅ Set up Contentful client with environment check
+if (!process.env.CONTENTFUL_SPACE_ID || !process.env.CONTENTFUL_ACCESS_TOKEN) {
+  throw new Error("❌ Missing Contentful environment variables");
+}
+
 const client = createClient({
   space: process.env.CONTENTFUL_SPACE_ID,
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
-  environment: "master", // ✅ Ensures the correct environment is used
+  environment: "master",
 });
 
+export async function generateStaticParams() {
+  try {
+    const res = await client.getEntries({ content_type: "page" });
+    return res.items.map((item) => ({ slug: item.fields.slug }));
+  } catch (error) {
+    console.error("❌ Error fetching slugs:", error);
+    return [];
+  }
+}
+
 export default async function Page({ params }) {
-  const { slug } = params || {}; // ✅ Ensure params exists
+  const { slug } = params || {};
 
   if (!slug) {
     console.error("❌ No slug provided for dynamic page.");
@@ -21,7 +35,6 @@ export default async function Page({ params }) {
   }
 
   try {
-    // ✅ Fetch the specific page by slug
     const res = await client.getEntries({
       content_type: "page",
       "fields.slug": slug,
@@ -33,18 +46,15 @@ export default async function Page({ params }) {
       return notFound();
     }
 
-    const page = res.items[0].fields;
-
-    // ✅ Ensure contentBlocks exists and is an array
+    const page = res.items.length ? res.items[0].fields : {};
     const contentBlocks = Array.isArray(page.contentBlocks) ? page.contentBlocks : [];
 
     return (
       <div className="text-center p-12">
         <h1 className="text-4xl font-bold mb-6">{page.title || "Untitled Page"}</h1>
 
-        {/* ✅ Safely loop through contentBlocks */}
         {contentBlocks.map((block) => {
-          if (!block || !block.sys?.contentType) {
+          if (!block || !block.sys || !block.sys.contentType) {
             console.warn("⚠ Skipping undefined content block.");
             return null;
           }
