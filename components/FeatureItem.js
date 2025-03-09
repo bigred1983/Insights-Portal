@@ -7,7 +7,7 @@ export default function FeatureItem({ feature }) {
   const imageUrl = hasImage ? `https:${feature.fields.image.fields.file.url}` : null;
 
   return (
-    <div className="border p-6 my-6 shadow-lg rounded-md">
+    <div className="border p-6 my-6 shadow-lg rounded-md bg-white">
       {/* ✅ Display the image if available */}
       {hasImage && (
         <div className="mb-4">
@@ -27,14 +27,14 @@ export default function FeatureItem({ feature }) {
 
       {/* ✅ Render Buttons if available */}
       {feature.fields.buttons && feature.fields.buttons.length > 0 && (
-        <div className="mt-4 flex gap-2">
+        <div className="mt-4 flex gap-4 flex-wrap">
           {feature.fields.buttons.map((button) => {
             const buttonUrl = button.fields.url || "#"; // ✅ Ensure URL is always defined
             const buttonLabel = button.fields.label || "Click Here"; // ✅ Default label
 
             return (
               <Link key={button.sys.id} href={buttonUrl}>
-                <span className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                <span className="bg-red-600 hover:bg-red-800 text-white font-bold py-3 px-6 rounded-lg shadow-md border border-red-700 inline-block">
                   {buttonLabel}
                 </span>
               </Link>

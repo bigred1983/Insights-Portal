@@ -36,7 +36,7 @@ export default function HeroSection({ hero }) {
 
               return (
                 <Link key={button.sys.id} href={buttonUrl}>
-                  <span className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                  <span className="bg-red-600 hover:bg-red-800 text-white font-bold py-3 px-6 rounded-lg shadow-md border border-red-700 inline-block">
                     {buttonLabel}
                   </span>
                 </Link>
