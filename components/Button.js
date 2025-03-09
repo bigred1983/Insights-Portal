@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 export default function Button({ button }) {
-  // ✅ Log the entire button object to check what Contentful returns
+  // ✅ Log button object to debug
   console.log("Button Data:", button);
 
   // ✅ Ensure the image field exists before rendering
@@ -10,7 +10,7 @@ export default function Button({ button }) {
 
   return (
     <div className="mt-6 flex items-center space-x-4">
-      {/* ✅ If an image exists, display it */}
+      {/* ✅ Display the image if available */}
       {hasImage && (
         <Image 
           src={imageUrl} 
@@ -20,9 +20,9 @@ export default function Button({ button }) {
         />
       )}
       
-      {/* ✅ The button itself */}
+      {/* ✅ Button with underscore-friendly link */}
       <a
-        href={button.fields.url || "#"}
+        href={button.fields.url || "#"} // ✅ Keeps underscores in URLs
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center"
         target="_blank"
         rel="noopener noreferrer"

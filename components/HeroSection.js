@@ -19,6 +19,7 @@ export default function HeroSection({ hero }) {
           layout="fill"
           objectFit="cover"
           className="absolute top-0 left-0 w-full h-full object-cover opacity-50"
+          unoptimized={true} // ✅ Fixes Contentful image loading issues
         />
       )}
 
@@ -29,9 +30,9 @@ export default function HeroSection({ hero }) {
 
         {/* ✅ Render Buttons (if available) */}
         {hero.fields.buttons && hero.fields.buttons.length > 0 && (
-          <div className="mt-6 flex gap-4 justify-center">
+          <div className="mt-6 flex gap-4 flex-wrap justify-center">
             {hero.fields.buttons.map((button) => {
-              const buttonUrl = button.fields.url || "#"; // ✅ Ensure URL is always defined
+              const buttonUrl = `/${button.fields.url || "#"}`; // ✅ Keeps underscores in URL
               const buttonLabel = button.fields.label || "Click Here"; // ✅ Default label
 
               return (

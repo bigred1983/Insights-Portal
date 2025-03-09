@@ -17,6 +17,7 @@ export default function FeatureItem({ feature }) {
             width={600} 
             height={400} 
             className="rounded-md"
+            unoptimized={true} // ✅ Fixes Contentful image loading issues
           />
         </div>
       )}
@@ -29,7 +30,7 @@ export default function FeatureItem({ feature }) {
       {feature.fields.buttons && feature.fields.buttons.length > 0 && (
         <div className="mt-4 flex gap-4 flex-wrap">
           {feature.fields.buttons.map((button) => {
-            const buttonUrl = button.fields.url || "#"; // ✅ Ensure URL is always defined
+            const buttonUrl = `/${button.fields.url || "#"}`; // ✅ Ensure URL keeps underscores
             const buttonLabel = button.fields.label || "Click Here"; // ✅ Default label
 
             return (

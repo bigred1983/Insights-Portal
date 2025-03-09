@@ -11,7 +11,7 @@ export default function TeamMember({ member }) {
   return (
     <div className="inline-block p-4 m-2 border rounded-lg w-64 shadow-md text-center">
       {/* ✅ Profile Image */}
-      {hasProfileImage && (
+      {hasProfileImage ? (
         <div className="flex justify-center">
           <Image
             src={profileImageUrl}
@@ -20,8 +20,11 @@ export default function TeamMember({ member }) {
             height={150}
             className="rounded-full"
             priority
+            unoptimized={true} // ✅ Fixes Contentful image loading issues
           />
         </div>
+      ) : (
+        <p className="text-gray-400">No profile image available</p>
       )}
 
       {/* ✅ Name & Role */}

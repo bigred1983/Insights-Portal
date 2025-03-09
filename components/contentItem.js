@@ -18,6 +18,7 @@ export default function ContentItem({ item }) {
         width={500}
         height={300}
         priority
+        unoptimized={true} // ✅ Ensures Contentful images load properly
       />
     </div>
   );
