@@ -3,8 +3,7 @@ import HeroSection from '@/components/HeroSection';
 import FeatureItem from '@/components/FeatureItem';
 import TeamMember from '@/components/TeamMember';
 import Button from '@/components/Button';
-import ContentItem from '@/components/ContentItem'; // ✅ Added ContentItem
-import SideMenu from '@/components/SideMenu'; // ✅ Added SideMenu
+import SideMenu from '@/components/SideMenu'; // ✅ Kept Side Menu
 
 // ✅ Ensure environment variables exist
 if (!process.env.CONTENTFUL_SPACE_ID || !process.env.CONTENTFUL_ACCESS_TOKEN) {
@@ -17,12 +16,12 @@ const client = createClient({
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
 });
 
-// ✅ Function to Fetch Page Data (Ensuring Slugs Stay with Underscores)
+// ✅ Function to Fetch Page Data
 async function fetchPageData() {
   try {
     const res = await client.getEntries({
       content_type: "page",
-      "fields.slug": "insights_portal", // ✅ Ensures underscores remain
+      "fields.slug": "insights_portal", // ✅ Ensures underscore
       include: 2,
     });
 
@@ -33,7 +32,7 @@ async function fetchPageData() {
 
     console.log("✅ Page Data:", res.items[0].fields); // ✅ Debug log
 
-    return res.items[0].fields; // ✅ Return fields object
+    return res.items[0].fields;
   } catch (error) {
     console.error("❌ Error fetching content:", error);
     return null;
@@ -42,7 +41,7 @@ async function fetchPageData() {
 
 // ✅ Home Page Component
 export default async function Home() {
-  const page = await fetchPageData(); // ✅ Fetch content outside render
+  const page = await fetchPageData();
 
   if (!page) {
     return <p className="text-red-500 text-center">Error loading content.</p>;
@@ -75,8 +74,6 @@ export default async function Home() {
               return <TeamMember key={block.sys.id} member={block} />;
             case "button":
               return <Button key={block.sys.id} button={block} />;
-            case "contentItem": // ✅ Added ContentItem case
-              return <ContentItem key={block.sys.id} item={block} />;
             default:
               console.warn("⚠ Unknown content type:", block.sys.contentType.sys.id);
               return <p key={block.sys.id} className="text-yellow-500">Unsupported content type: {block.sys.contentType.sys.id}</p>;

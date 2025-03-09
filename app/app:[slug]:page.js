@@ -4,7 +4,6 @@ import HeroSection from '@/components/HeroSection';
 import FeatureItem from '@/components/FeatureItem';
 import TeamMember from '@/components/TeamMember';
 import Button from '@/components/Button';
-import ContentItem from '@/components/ContentItem'; // ✅ Added ContentItem
 import SideMenu from '@/components/SideMenu'; // ✅ Added SideMenu
 
 // ✅ Ensure environment variables exist
@@ -19,7 +18,7 @@ const client = createClient({
   environment: "master",
 });
 
-// ✅ Fix `generateStaticParams()` to ensure slugs remain unchanged
+// ✅ Ensure slugs remain unchanged
 export async function generateStaticParams() {
   try {
     const res = await client.getEntries({ content_type: "page" });
@@ -45,7 +44,7 @@ export default async function Page({ params }) {
     // ✅ Ensure slug lookup is correct (keeps underscores)
     const res = await client.getEntries({
       content_type: "page",
-      "fields.slug": slug, // ✅ Matches exact slug from Contentful
+      "fields.slug": slug,
       include: 2,
     });
 
@@ -60,7 +59,7 @@ export default async function Page({ params }) {
     return (
       <div className="relative flex">
         {/* ✅ Side Menu */}
-        <SideMenu /> 
+        <SideMenu />
 
         {/* ✅ Main Content */}
         <div className="text-center p-12 w-full">
@@ -82,8 +81,6 @@ export default async function Page({ params }) {
                 return <TeamMember key={block.sys.id} member={block} />;
               case "button":
                 return <Button key={block.sys.id} button={block} />;
-              case "contentItem": // ✅ Added ContentItem case
-                return <ContentItem key={block.sys.id} item={block} />;
               default:
                 console.warn("⚠ Unknown content type:", block.sys.contentType.sys.id);
                 return <p key={block.sys.id} className="text-yellow-500">Unsupported content type: {block.sys.contentType.sys.id}</p>;
