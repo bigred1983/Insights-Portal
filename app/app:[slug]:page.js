@@ -30,7 +30,7 @@ export async function generateStaticParams() {
       return [];
     }
 
-    // ✅ Log all slugs for debugging
+    // ✅ Extract slugs and log them
     const slugs = res.items.map((item) => item.fields.slug);
     console.log("✅ Found slugs:", slugs);
 
@@ -44,7 +44,6 @@ export async function generateStaticParams() {
 // ✅ Page Component
 export default async function Page({ params }) {
   const { slug } = params || {};
-
   console.log(`📢 Attempting to render page for slug: ${slug}`); // ✅ Debugging
 
   if (!slug) {
@@ -53,10 +52,10 @@ export default async function Page({ params }) {
   }
 
   try {
-    // ✅ Fetch page data from Contentful
+    // ✅ Fetch page data from Contentful (ensures underscores are used)
     const res = await client.getEntries({
       content_type: "page",
-      "fields.slug": slug,
+      "fields.slug": slug.replace(/-/g, "_"), // ✅ Ensures underscores are used
       include: 2,
     });
 
