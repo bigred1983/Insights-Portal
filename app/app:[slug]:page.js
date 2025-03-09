@@ -18,22 +18,34 @@ const client = createClient({
   environment: "master",
 });
 
-// ✅ Ensure slugs remain unchanged
+// ✅ Ensure Next.js pre-generates all pages with the correct slugs
 export async function generateStaticParams() {
   try {
+    console.log("📢 Fetching all page slugs from Contentful...");
+
     const res = await client.getEntries({ content_type: "page" });
 
-    return res.items.map((item) => ({
-      slug: item.fields.slug, // ✅ Keeps underscores
-    }));
+    if (!res.items.length) {
+      console.warn("⚠ No pages found in Contentful.");
+      return [];
+    }
+
+    // ✅ Log all slugs for debugging
+    const slugs = res.items.map((item) => item.fields.slug);
+    console.log("✅ Found slugs:", slugs);
+
+    return slugs.map((slug) => ({ slug }));
   } catch (error) {
     console.error("❌ Error fetching slugs:", error);
     return [];
   }
 }
 
+// ✅ Page Component
 export default async function Page({ params }) {
   const { slug } = params || {};
+
+  console.log(`📢 Attempting to render page for slug: ${slug}`); // ✅ Debugging
 
   if (!slug) {
     console.error("❌ No slug provided for dynamic page.");
@@ -41,7 +53,7 @@ export default async function Page({ params }) {
   }
 
   try {
-    // ✅ Ensure slug lookup is correct (keeps underscores)
+    // ✅ Fetch page data from Contentful
     const res = await client.getEntries({
       content_type: "page",
       "fields.slug": slug,
@@ -53,8 +65,10 @@ export default async function Page({ params }) {
       return notFound();
     }
 
-    const page = res.items.length ? res.items[0].fields : {};
+    const page = res.items[0].fields;
     const contentBlocks = Array.isArray(page.contentBlocks) ? page.contentBlocks : [];
+
+    console.log("✅ Loaded page data:", page); // ✅ Debugging the returned content
 
     return (
       <div className="relative flex">
