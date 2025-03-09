@@ -8,9 +8,9 @@ const nextConfig = {
     CONTENTFUL_ACCESS_TOKEN: process.env.CONTENTFUL_ACCESS_TOKEN,
   },
   reactStrictMode: true,
-  trailingSlash: true, // ✅ Ensures URLs match Contentful slugs correctly
+  trailingSlash: false, // ❌ Disable this if it was previously enabled
+  output: "export", // ✅ Forces Next.js to pre-build static pages
 };
 
 export default nextConfig;
-
   
