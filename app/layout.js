@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import SideMenu from "@/components/SideMenu"; // ✅ Import the Side Menu
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,7 +23,13 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100 text-gray-900`}
       >
-        <main className="container mx-auto p-6">{children}</main>
+        {/* ✅ Add Side Menu */}
+        <SideMenu />
+
+        {/* ✅ Ensure main content is shifted when menu is open */}
+        <main className="container mx-auto p-6 transition-all duration-300">
+          {children}
+        </main>
       </body>
     </html>
   );
