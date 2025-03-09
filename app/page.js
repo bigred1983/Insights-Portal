@@ -21,7 +21,7 @@ async function fetchPageData() {
   try {
     const res = await client.getEntries({
       content_type: "page",
-      "fields.slug": "insights_portal", // ✅ Ensures underscore
+      "fields.slug": "Insights_Portal", // ✅ Ensures underscore
       include: 2,
     });
 
