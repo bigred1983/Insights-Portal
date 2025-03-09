@@ -54,7 +54,7 @@ export default function SideMenu() {
                   href={`/${slug}`}
                   className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
                 >
-                  {slug.replace("-", " ").toUpperCase()}
+                  {slug.replace("_", " ").toUpperCase()}
                 </Link>
               </li>
             ))
