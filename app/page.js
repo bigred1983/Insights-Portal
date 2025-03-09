@@ -15,12 +15,12 @@ const client = createClient({
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
 });
 
-// ✅ Function to Fetch Page Data (Best Practice for Next.js App Router)
+// ✅ Function to Fetch Page Data (Fixes Hyphen vs Underscore Issue)
 async function fetchPageData() {
   try {
     const res = await client.getEntries({
       content_type: "page",
-      "fields.slug": "Insights-Portal",
+      "fields.slug": "insights_portal", // ✅ Now uses an underscore
       include: 2,
     });
 
@@ -28,6 +28,8 @@ async function fetchPageData() {
       console.error("❌ No content found for Insights Portal.");
       return null;
     }
+
+    console.log("✅ Page Data:", res.items[0].fields); // ✅ Debug log
 
     return res.items[0].fields; // ✅ Return fields object
   } catch (error) {
