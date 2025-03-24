@@ -3,13 +3,11 @@ import Link from "next/link";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 
 export default function FeatureItem({ feature }) {
-  const imageUrl = feature.fields.image?.fields?.file?.url
-    ? `https:${feature.fields.image.fields.file.url}`
-    : null;
+  const { title, description, image, buttons } = feature.fields;
 
-  const title = feature.fields.title;
-  const description = feature.fields.description;
-  const buttons = feature.fields.buttons;
+  const imageUrl = image?.fields?.file?.url
+    ? `https:${image.fields.file.url}`
+    : null;
 
   const isRichText = description?.nodeType === "document";
 
@@ -20,7 +18,7 @@ export default function FeatureItem({ feature }) {
         <div className="mb-4">
           <Image
             src={imageUrl}
-            alt={title || "Feature Image"}
+            alt={image?.fields?.title || "Feature Image"}
             width={600}
             height={400}
             className="rounded-md"
