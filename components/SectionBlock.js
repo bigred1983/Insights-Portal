@@ -1,4 +1,5 @@
 import Button from "./Button";
+import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 
 export default function SectionBlock({ block }) {
   const { title, subtitle, buttons } = block.fields;
@@ -8,8 +9,12 @@ export default function SectionBlock({ block }) {
       {/* Title */}
       {title && <h2 className="text-3xl font-bold mb-4">{title}</h2>}
 
-      {/* Subtitle */}
-      {subtitle && <p className="mb-6 text-lg whitespace-pre-line">{subtitle}</p>}
+      {/* Subtitle (Rich Text Support) */}
+      {subtitle && (
+        <div className="mb-6 text-lg leading-relaxed">
+          {documentToReactComponents(subtitle)}
+        </div>
+      )}
 
       {/* Buttons */}
       {Array.isArray(buttons) && buttons.length > 0 && (
