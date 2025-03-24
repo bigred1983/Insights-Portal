@@ -3,7 +3,10 @@ import Link from "next/link";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 
 export default function FeatureItem({ feature }) {
-  const { title, description, image, buttons } = feature.fields;
+  const image = feature.fields.image;
+  const buttons = feature.fields.buttons;
+  const title = feature.fields.title;
+  const description = feature.fields.description;
 
   const imageUrl = image?.fields?.file?.url
     ? `https:${image.fields.file.url}`
@@ -22,21 +25,15 @@ export default function FeatureItem({ feature }) {
             width={600}
             height={400}
             className="rounded-md"
-            unoptimized={true}
+            unoptimized
           />
         </div>
       )}
 
-      {/* Title */}
-      <h2 className="text-2xl font-semibold">{title || "No feature title"}</h2>
-
-      {/* Description */}
+      {/* Title & Description */}
+      <h2 className="text-2xl font-semibold">{title || "No title"}</h2>
       <div className="text-gray-600 mb-4">
-        {description
-          ? isRichText
-            ? documentToReactComponents(description)
-            : description
-          : "No description available"}
+        {isRichText ? documentToReactComponents(description) : description}
       </div>
 
       {/* Buttons */}
@@ -45,7 +42,7 @@ export default function FeatureItem({ feature }) {
           {buttons.map((button) =>
             button?.fields?.destinationUrl ? (
               <Link key={button.sys.id} href={button.fields.destinationUrl}>
-                <span className="bg-red-600 hover:bg-red-800 text-white font-bold py-3 px-6 rounded-lg shadow-md border border-red-700 inline-block">
+                <span className="bg-red-600 hover:bg-red-800 text-white font-bold py-3 px-6 rounded-lg shadow-md inline-block">
                   {button.fields.label}
                 </span>
               </Link>
