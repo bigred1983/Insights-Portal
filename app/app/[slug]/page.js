@@ -13,13 +13,19 @@ const client = createClient({
   environment: "master",
 });
 
-// ✅ Generate static paths for all slugs
+// ✅ Let Next.js know this route is dynamic
+export const dynamicParams = true;
+
+// ✅ Enable incremental static regeneration (optional)
+export const revalidate = 60;
+
+// ✅ Generate all static paths
 export async function generateStaticParams() {
   try {
     const res = await client.getEntries({ content_type: "page" });
 
     return res.items.map((item) => ({
-      slug: item.fields.slug, // Use slug exactly as stored in Contentful
+      slug: item.fields.slug,
     }));
   } catch (error) {
     console.error("❌ Error fetching slugs:", error);
@@ -27,7 +33,7 @@ export async function generateStaticParams() {
   }
 }
 
-// ✅ Dynamic Page Component
+// ✅ Page component
 export default async function Page({ params }) {
   const slug = params?.slug;
 
@@ -36,7 +42,7 @@ export default async function Page({ params }) {
   try {
     const res = await client.getEntries({
       content_type: "page",
-      "fields.slug": slug, // ✅ Use slug exactly as it is
+      "fields.slug": slug,
       include: 2,
     });
 
@@ -51,7 +57,6 @@ export default async function Page({ params }) {
         <div className="text-center p-12 w-full">
           <h1 className="text-4xl font-bold mb-6">{page.title || "Untitled Page"}</h1>
 
-          {/* Render Content Blocks */}
           {contentBlocks.map((block, index) => {
             const typeId = block?.sys?.contentType?.sys?.id;
 
