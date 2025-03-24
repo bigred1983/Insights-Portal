@@ -17,7 +17,7 @@ export default function HeroSection({ hero }) {
       {backgroundImageUrl && (
         <Image
           src={backgroundImageUrl}
-          alt={title || "Hero Background"}
+          alt="Hero Background"
           width={1200}
           height={400}
           className="w-full mb-6 rounded"
@@ -28,17 +28,20 @@ export default function HeroSection({ hero }) {
       {/* Title */}
       {title && (
         <h2 className="text-3xl font-bold mb-2">
-          {isTitleRichText ? documentToReactComponents(title) : title}
+          {isTitleRichText
+            ? documentToReactComponents(title)
+            : title}
         </h2>
       )}
 
       {/* Subtitle */}
       {subtitle && (
         <div className="text-lg leading-relaxed">
-          {isSubtitleRichText ? documentToReactComponents(subtitle) : subtitle}
+          {isSubtitleRichText
+            ? documentToReactComponents(subtitle)
+            : subtitle}
         </div>
       )}
     </div>
   );
 }
-
