@@ -5,18 +5,13 @@ import TeamMember from "@/components/TeamMember";
 import Button from "@/components/Button";
 import SideMenu from "@/components/SideMenu";
 
-// ✅ Check environment variables
-if (!process.env.CONTENTFUL_SPACE_ID || !process.env.CONTENTFUL_ACCESS_TOKEN) {
-  throw new Error("❌ Missing Contentful environment variables");
-}
-
-// ✅ Set up Contentful client
+// ✅ Setup Contentful client
 const client = createClient({
   space: process.env.CONTENTFUL_SPACE_ID,
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
 });
 
-// ✅ Fetch page data
+// ✅ Fetch Insights_Portal page data
 async function fetchPageData() {
   try {
     const res = await client.getEntries({
@@ -26,48 +21,42 @@ async function fetchPageData() {
     });
 
     if (!res.items.length) {
-      console.error("❌ No content found for Insights Portal.");
+      console.error("❌ No content found for Insights_Portal");
       return null;
     }
 
-    console.log("✅ Page Data:", res.items[0].fields);
     return res.items[0].fields;
   } catch (error) {
-    console.error("❌ Error fetching content:", error);
+    console.error("❌ Error fetching homepage content:", error);
     return null;
   }
 }
 
-// ✅ Main Page Component
+// ✅ Main Home Component
 export default async function Home() {
   const page = await fetchPageData();
 
   if (!page) {
-    return <p className="text-red-500 text-center">Error loading content.</p>;
+    return <p className="text-red-500 text-center mt-10">❌ Could not load page content.</p>;
   }
 
   const contentBlocks = Array.isArray(page.contentBlocks) ? page.contentBlocks : [];
 
   return (
     <div className="relative flex">
-      {/* Side Menu */}
       <SideMenu />
 
-      {/* Main Content */}
       <div className="text-center p-12 w-full">
         <h1 className="text-4xl font-bold mb-6">{page.title || "Untitled Page"}</h1>
 
-        {/* Render Each Content Block */}
         {contentBlocks.length > 0 ? (
           contentBlocks.map((block, index) => {
             const typeId = block?.sys?.contentType?.sys?.id;
-            console.log("🔍 Block Data:", block);
-            console.log("🧪 Block Type ID:", typeId);
 
             if (!typeId) {
               return (
                 <div key={`unknown-${index}`} className="p-4 my-4 bg-yellow-100 text-yellow-800 rounded">
-                  ⚠ Unknown content block at index {index}
+                  ⚠ Unknown block at index {index}
                 </div>
               );
             }
@@ -84,13 +73,13 @@ export default async function Home() {
               default:
                 return (
                   <div key={block.sys.id} className="p-4 my-4 bg-yellow-100 text-yellow-800 rounded">
-                    ⚠ Unsupported content block type: <strong>{typeId}</strong>
+                    ⚠ Unsupported block type: {typeId}
                   </div>
                 );
             }
           })
         ) : (
-          <p className="text-gray-500">No content blocks found for this page.</p>
+          <p className="text-gray-500">No content blocks found.</p>
         )}
       </div>
     </div>
