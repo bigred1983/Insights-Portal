@@ -1,34 +1,27 @@
-import Image from "next/image";
-
 export default function Button({ button }) {
-  // ✅ Log button object to debug
-  console.log("Button Data:", button);
-
-  // ✅ Ensure the image field exists before rendering
-  const hasImage = button.fields.image && button.fields.image.fields?.file?.url;
-  const imageUrl = hasImage ? `https:${button.fields.image.fields.file.url}` : null;
+  const imageUrl = button.fields.iconOrImage?.fields?.file?.url
+    ? `https:${button.fields.iconOrImage.fields.file.url}`
+    : null;
 
   return (
-    <div className="mt-6 flex items-center space-x-4">
-      {/* ✅ Display the image if available */}
-      {hasImage && (
-        <Image 
-          src={imageUrl} 
-          alt={button.fields.label || "Button Image"} 
-          width={40} 
-          height={40} 
+    <div className="inline-block text-center p-4">
+      {/* Image */}
+      {imageUrl && (
+        <img
+          src={imageUrl}
+          alt={button.fields.label}
+          className="mx-auto mb-2 w-12 h-12 object-contain"
         />
       )}
-      
-      {/* ✅ Button with underscore-friendly link */}
+
+      {/* Button Link */}
       <a
-        href={button.fields.url || "#"} // ✅ Keeps underscores in URLs
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center"
-        target="_blank"
-        rel="noopener noreferrer"
+        href={button.fields.destinationUrl}
+        className="bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-4 rounded-lg shadow-md"
       >
         {button.fields.label}
       </a>
     </div>
   );
 }
+

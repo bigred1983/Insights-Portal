@@ -18,7 +18,7 @@ const client = createClient({
   environment: "master",
 });
 
-// ✅ Ensure Next.js pre-generates all pages with the correct slugs
+// ✅ Ensure Next.js pre-generates all pages with correct slugs
 export async function generateStaticParams() {
   try {
     console.log("📢 Fetching all page slugs from Contentful...");
@@ -67,7 +67,7 @@ export default async function Page({ params }) {
     const page = res.items[0].fields;
     const contentBlocks = Array.isArray(page.contentBlocks) ? page.contentBlocks : [];
 
-    console.log("✅ Loaded page data:", page); // ✅ Debugging the returned content
+    console.log("✅ Loaded page data:", JSON.stringify(page, null, 2)); // ✅ Debugging the returned content
 
     return (
       <div className="relative flex">

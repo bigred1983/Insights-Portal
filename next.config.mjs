@@ -8,7 +8,6 @@ const nextConfig = {
     CONTENTFUL_ACCESS_TOKEN: process.env.CONTENTFUL_ACCESS_TOKEN,
   },
   reactStrictMode: true,
-  output: "standalone", // ✅ Ensures Next.js works with dynamic routes
 };
 
 export default nextConfig;
