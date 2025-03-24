@@ -5,13 +5,13 @@ import TeamMember from "@/components/TeamMember";
 import Button from "@/components/Button";
 import SideMenu from "@/components/SideMenu";
 
-// ✅ Setup Contentful client
+// Contentful setup
 const client = createClient({
   space: process.env.CONTENTFUL_SPACE_ID,
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
 });
 
-// ✅ Fetch Insights_Portal page data
+// Fetch the homepage content
 async function fetchPageData() {
   try {
     const res = await client.getEntries({
@@ -21,42 +21,52 @@ async function fetchPageData() {
     });
 
     if (!res.items.length) {
-      console.error("❌ No content found for Insights_Portal");
+      console.warn("⚠ No homepage content found.");
       return null;
     }
 
     return res.items[0].fields;
-  } catch (error) {
-    console.error("❌ Error fetching homepage content:", error);
+  } catch (err) {
+    console.error("❌ Failed to fetch homepage data:", err);
     return null;
   }
 }
 
-// ✅ Main Home Component
+// Main homepage component
 export default async function Home() {
   const page = await fetchPageData();
 
   if (!page) {
-    return <p className="text-red-500 text-center mt-10">❌ Could not load page content.</p>;
+    return (
+      <div className="text-center p-12">
+        <h1 className="text-red-500 text-xl">⚠ Homepage content failed to load.</h1>
+      </div>
+    );
   }
 
-  const contentBlocks = Array.isArray(page.contentBlocks) ? page.contentBlocks : [];
+  const contentBlocks = Array.isArray(page.contentBlocks)
+    ? page.contentBlocks
+    : [];
 
   return (
     <div className="relative flex">
       <SideMenu />
 
       <div className="text-center p-12 w-full">
-        <h1 className="text-4xl font-bold mb-6">{page.title || "Untitled Page"}</h1>
+        <h1 className="text-4xl font-bold mb-6">
+          {page.title || "Untitled Page"}
+        </h1>
 
-        {contentBlocks.length > 0 ? (
+        {contentBlocks.length === 0 ? (
+          <p className="text-gray-400">No content blocks found.</p>
+        ) : (
           contentBlocks.map((block, index) => {
             const typeId = block?.sys?.contentType?.sys?.id;
 
             if (!typeId) {
               return (
-                <div key={`unknown-${index}`} className="p-4 my-4 bg-yellow-100 text-yellow-800 rounded">
-                  ⚠ Unknown block at index {index}
+                <div key={`unknown-${index}`} className="bg-yellow-100 text-yellow-800 p-4 my-4 rounded">
+                  ⚠ Unknown content block at index {index}
                 </div>
               );
             }
@@ -72,14 +82,12 @@ export default async function Home() {
                 return <Button key={block.sys.id} button={block} />;
               default:
                 return (
-                  <div key={block.sys.id} className="p-4 my-4 bg-yellow-100 text-yellow-800 rounded">
+                  <div key={block.sys.id} className="bg-yellow-100 text-yellow-800 p-4 my-4 rounded">
                     ⚠ Unsupported block type: {typeId}
                   </div>
                 );
             }
           })
-        ) : (
-          <p className="text-gray-500">No content blocks found.</p>
         )}
       </div>
     </div>
