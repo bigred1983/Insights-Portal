@@ -1,93 +1,63 @@
-import { createClient } from 'contentful';
-import { notFound } from 'next/navigation';
-import HeroSection from '@/components/HeroSection';
-import FeatureItem from '@/components/FeatureItem';
-import TeamMember from '@/components/TeamMember';
-import Button from '@/components/Button';
-import SideMenu from '@/components/SideMenu'; // ✅ Added SideMenu
+import { createClient } from "contentful";
+import SectionBlock from "@/components/SectionBlock";
+import FeatureItem from "@/components/FeatureItem";
+import TeamMember from "@/components/TeamMember";
+import Button from "@/components/Button";
+import SideMenu from "@/components/SideMenu";
+import { notFound } from "next/navigation";
 
-// ✅ Ensure environment variables exist
-if (!process.env.CONTENTFUL_SPACE_ID || !process.env.CONTENTFUL_ACCESS_TOKEN) {
-  throw new Error("❌ Missing Contentful environment variables");
-}
-
-// ✅ Set up Contentful client
+// ✅ Contentful client setup
 const client = createClient({
   space: process.env.CONTENTFUL_SPACE_ID,
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
   environment: "master",
 });
 
-// ✅ Ensure Next.js pre-generates all pages with correct slugs
+// ✅ Generate static paths for all slugs
 export async function generateStaticParams() {
   try {
-    console.log("📢 Fetching all page slugs from Contentful...");
-
     const res = await client.getEntries({ content_type: "page" });
 
-    if (!res.items.length) {
-      console.warn("⚠ No pages found in Contentful.");
-      return [];
-    }
-
-    // ✅ Extract slugs and log them
-    const slugs = res.items.map((item) => item.fields.slug);
-    console.log("✅ Found slugs:", slugs);
-
-    return slugs.map((slug) => ({ slug }));
+    return res.items.map((item) => ({
+      slug: item.fields.slug, // Use slug exactly as stored in Contentful
+    }));
   } catch (error) {
     console.error("❌ Error fetching slugs:", error);
     return [];
   }
 }
 
-// ✅ Page Component
+// ✅ Dynamic Page Component
 export default async function Page({ params }) {
-  const { slug } = params || {};
-  console.log(`📢 Attempting to render page for slug: ${slug}`); // ✅ Debugging
+  const slug = params?.slug;
 
-  if (!slug) {
-    console.error("❌ No slug provided for dynamic page.");
-    return notFound();
-  }
+  if (!slug) return notFound();
 
   try {
-    // ✅ Fetch page data from Contentful (ensures underscores are used)
     const res = await client.getEntries({
       content_type: "page",
-      "fields.slug": slug.replace(/-/g, "_"), // ✅ Ensures underscores are used
+      "fields.slug": slug, // ✅ Use slug exactly as it is
       include: 2,
     });
 
-    if (!res.items.length) {
-      console.error(`❌ No content found for slug: ${slug}`);
-      return notFound();
-    }
+    if (!res.items.length) return notFound();
 
     const page = res.items[0].fields;
-    const contentBlocks = Array.isArray(page.contentBlocks) ? page.contentBlocks : [];
-
-    console.log("✅ Loaded page data:", JSON.stringify(page, null, 2)); // ✅ Debugging the returned content
+    const contentBlocks = page.contentBlocks || [];
 
     return (
       <div className="relative flex">
-        {/* ✅ Side Menu */}
         <SideMenu />
-
-        {/* ✅ Main Content */}
         <div className="text-center p-12 w-full">
           <h1 className="text-4xl font-bold mb-6">{page.title || "Untitled Page"}</h1>
 
-          {/* ✅ Render Content Blocks */}
-          {contentBlocks.map((block) => {
-            if (!block || !block.sys || !block.sys.contentType) {
-              console.warn("⚠ Skipping undefined content block.");
-              return null;
-            }
+          {/* Render Content Blocks */}
+          {contentBlocks.map((block, index) => {
+            const typeId = block?.sys?.contentType?.sys?.id;
 
-            switch (block.sys.contentType.sys.id) {
+            switch (typeId) {
               case "heroSection":
-                return <HeroSection key={block.sys.id} hero={block} />;
+                return <SectionBlock key={block.sys.id} block={block} />;
               case "featureItem":
                 return <FeatureItem key={block.sys.id} feature={block} />;
               case "teamMember":
@@ -95,15 +65,18 @@ export default async function Page({ params }) {
               case "button":
                 return <Button key={block.sys.id} button={block} />;
               default:
-                console.warn("⚠ Unknown content type:", block.sys.contentType.sys.id);
-                return <p key={block.sys.id} className="text-yellow-500">Unsupported content type: {block.sys.contentType.sys.id}</p>;
+                return (
+                  <div key={index} className="p-4 my-4 bg-yellow-100 text-yellow-800 rounded">
+                    ⚠ Unsupported block type: {typeId}
+                  </div>
+                );
             }
           })}
         </div>
       </div>
     );
   } catch (error) {
-    console.error(`❌ Error fetching content for slug: ${slug}`, error);
-    return <p className="text-red-500 text-center">Error loading content: {error.message}</p>;
+    console.error(`❌ Error loading page for slug: ${slug}`, error);
+    return <p className="text-red-500 text-center">Something went wrong loading this page.</p>;
   }
 }
