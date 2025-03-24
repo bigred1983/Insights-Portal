@@ -1,11 +1,11 @@
-import { createClient } from 'contentful';
-import HeroSection from '@/components/HeroSection';
-import FeatureItem from '@/components/FeatureItem';
-import TeamMember from '@/components/TeamMember';
-import Button from '@/components/Button';
-import SideMenu from '@/components/SideMenu'; // ✅ Kept Side Menu
+import { createClient } from "contentful";
+import SectionBlock from "@/components/SectionBlock";
+import FeatureItem from "@/components/FeatureItem";
+import TeamMember from "@/components/TeamMember";
+import Button from "@/components/Button";
+import SideMenu from "@/components/SideMenu";
 
-// ✅ Ensure environment variables exist
+// ✅ Check environment variables
 if (!process.env.CONTENTFUL_SPACE_ID || !process.env.CONTENTFUL_ACCESS_TOKEN) {
   throw new Error("❌ Missing Contentful environment variables");
 }
@@ -16,12 +16,12 @@ const client = createClient({
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
 });
 
-// ✅ Function to Fetch Page Data
+// ✅ Fetch page data
 async function fetchPageData() {
   try {
     const res = await client.getEntries({
       content_type: "page",
-      "fields.slug": "Insights_Portal", // ✅ Ensures underscore
+      "fields.slug": "Insights_Portal",
       include: 2,
     });
 
@@ -30,8 +30,7 @@ async function fetchPageData() {
       return null;
     }
 
-    console.log("✅ Page Data:", res.items[0].fields); // ✅ Debug log
-
+    console.log("✅ Page Data:", res.items[0].fields);
     return res.items[0].fields;
   } catch (error) {
     console.error("❌ Error fetching content:", error);
@@ -39,7 +38,7 @@ async function fetchPageData() {
   }
 }
 
-// ✅ Home Page Component
+// ✅ Main Page Component
 export default async function Home() {
   const page = await fetchPageData();
 
@@ -51,34 +50,48 @@ export default async function Home() {
 
   return (
     <div className="relative flex">
-      {/* ✅ Side Menu */}
+      {/* Side Menu */}
       <SideMenu />
 
-      {/* ✅ Main Content */}
+      {/* Main Content */}
       <div className="text-center p-12 w-full">
         <h1 className="text-4xl font-bold mb-6">{page.title || "Untitled Page"}</h1>
 
-        {/* ✅ Render Content Blocks */}
-        {contentBlocks.map((block) => {
-          if (!block || !block.sys?.contentType) {
-            console.warn("⚠ Skipping undefined content block.");
-            return null;
-          }
+        {/* Render Each Content Block */}
+        {contentBlocks.length > 0 ? (
+          contentBlocks.map((block, index) => {
+            const typeId = block?.sys?.contentType?.sys?.id;
+            console.log("🔍 Block Data:", block);
+            console.log("🧪 Block Type ID:", typeId);
 
-          switch (block.sys.contentType.sys.id) {
-            case "heroSection":
-              return <HeroSection key={block.sys.id} hero={block} />;
-            case "featureItem":
-              return <FeatureItem key={block.sys.id} feature={block} />;
-            case "teamMember":
-              return <TeamMember key={block.sys.id} member={block} />;
-            case "button":
-              return <Button key={block.sys.id} button={block} />;
-            default:
-              console.warn("⚠ Unknown content type:", block.sys.contentType.sys.id);
-              return <p key={block.sys.id} className="text-yellow-500">Unsupported content type: {block.sys.contentType.sys.id}</p>;
-          }
-        })}
+            if (!typeId) {
+              return (
+                <div key={`unknown-${index}`} className="p-4 my-4 bg-yellow-100 text-yellow-800 rounded">
+                  ⚠ Unknown content block at index {index}
+                </div>
+              );
+            }
+
+            switch (typeId) {
+              case "heroSection":
+                return <SectionBlock key={block.sys.id} block={block} />;
+              case "featureItem":
+                return <FeatureItem key={block.sys.id} feature={block} />;
+              case "teamMember":
+                return <TeamMember key={block.sys.id} member={block} />;
+              case "button":
+                return <Button key={block.sys.id} button={block} />;
+              default:
+                return (
+                  <div key={block.sys.id} className="p-4 my-4 bg-yellow-100 text-yellow-800 rounded">
+                    ⚠ Unsupported content block type: <strong>{typeId}</strong>
+                  </div>
+                );
+            }
+          })
+        ) : (
+          <p className="text-gray-500">No content blocks found for this page.</p>
+        )}
       </div>
     </div>
   );
