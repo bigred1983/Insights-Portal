@@ -13,20 +13,28 @@ const client = createClient({
   environment: "master",
 });
 
-// Let Next.js know these pages are dynamic
+// ✅ Let Next.js know this route supports dynamic params
 export const dynamicParams = true;
 export const revalidate = 60;
 
-// Generate static paths for build
+// ✅ Generate static paths at build time
 export async function generateStaticParams() {
-  const res = await client.getEntries({ content_type: "page" });
+  try {
+    const res = await client.getEntries({ content_type: "page" });
 
-  return res.items.map((item) => ({
-    slug: item.fields.slug,
-  }));
+    const slugs = res.items.map((item) => item.fields.slug);
+
+    // ✅ DEBUG: Log generated slugs for Netlify build logs
+    console.log("✅ Generating static paths for slugs:", slugs);
+
+    return slugs.map((slug) => ({ slug }));
+  } catch (error) {
+    console.error("❌ Error generating static params:", error);
+    return [];
+  }
 }
 
-// Page Component
+// ✅ Page Component for dynamic slug
 export default async function Page({ params }) {
   const slug = params?.slug;
   if (!slug) return notFound();
@@ -49,7 +57,6 @@ export default async function Page({ params }) {
         <h1 className="text-4xl font-bold mb-6">{page.title || "Untitled Page"}</h1>
         {contentBlocks.map((block, index) => {
           const typeId = block?.sys?.contentType?.sys?.id;
-
           switch (typeId) {
             case "heroSection":
               return <SectionBlock key={block.sys.id} block={block} />;
