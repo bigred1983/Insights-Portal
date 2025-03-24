@@ -7,7 +7,10 @@ export default function FeatureItem({ feature }) {
     ? `https:${feature.fields.image.fields.file.url}`
     : null;
 
-  const { title, description, buttons } = feature.fields;
+  const title = feature.fields.title;
+  const description = feature.fields.description;
+  const buttons = feature.fields.buttons;
+
   const isRichText = description?.nodeType === "document";
 
   return (
