@@ -9,19 +9,21 @@ export default function SectionBlock({ block }) {
       {/* Title */}
       {title && <h2 className="text-3xl font-bold mb-4">{title}</h2>}
 
-      {/* Subtitle (Rich Text Support) */}
+      {/* Rich Text Subtitle */}
       {subtitle && (
         <div className="mb-6 text-lg leading-relaxed">
           {documentToReactComponents(subtitle)}
         </div>
       )}
 
-      {/* Buttons */}
+      {/* Buttons — safely map */}
       {Array.isArray(buttons) && buttons.length > 0 && (
         <div className="flex flex-wrap justify-center gap-4">
-          {buttons.map((button) => (
-            <Button key={button.sys.id} button={button} />
-          ))}
+          {buttons.map((button) =>
+            button?.fields ? (
+              <Button key={button.sys.id} button={button} />
+            ) : null
+          )}
         </div>
       )}
     </div>

@@ -28,16 +28,18 @@ export default function FeatureItem({ feature }) {
       <h2 className="text-2xl font-semibold">{feature.fields.title || "No feature title"}</h2>
       <p className="text-gray-600">{feature.fields.description || "No description available"}</p>
 
-      {/* Buttons */}
-      {feature.fields.buttons?.length > 0 && (
+      {/* Buttons — safely mapped */}
+      {Array.isArray(feature.fields.buttons) && feature.fields.buttons.length > 0 && (
         <div className="mt-4 flex gap-4 flex-wrap">
-          {feature.fields.buttons.map((button) => (
-            <Link key={button.sys.id} href={button.fields.destinationUrl}>
-              <span className="bg-red-600 hover:bg-red-800 text-white font-bold py-3 px-6 rounded-lg shadow-md border border-red-700 inline-block">
-                {button.fields.label}
-              </span>
-            </Link>
-          ))}
+          {feature.fields.buttons.map((button) =>
+            button?.fields?.destinationUrl ? (
+              <Link key={button.sys.id} href={button.fields.destinationUrl}>
+                <span className="bg-red-600 hover:bg-red-800 text-white font-bold py-3 px-6 rounded-lg shadow-md border border-red-700 inline-block">
+                  {button.fields.label}
+                </span>
+              </Link>
+            ) : null
+          )}
         </div>
       )}
     </div>

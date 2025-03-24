@@ -14,7 +14,7 @@ export default function Button({ button }) {
         />
       )}
 
-      {/* Button Link */}
+      {/* Link */}
       <a
         href={button.fields.destinationUrl}
         className="bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-4 rounded-lg shadow-md"
