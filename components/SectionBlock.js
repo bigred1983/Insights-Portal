@@ -16,7 +16,7 @@ export default function SectionBlock({ block }) {
       {/* Title */}
       {title && <h2 className="text-3xl font-bold mb-4">{title}</h2>}
 
-      {/* Description */}
+      {/* Description (Rich Text Safe) */}
       {description && (
         <div className="mb-6 text-lg leading-relaxed">
           {isDescriptionRichText
