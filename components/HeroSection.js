@@ -1,5 +1,5 @@
 import Button from "./Button";
-import Image from "next/image"; // ✅ Add Image import
+import Image from "next/image";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 
 export default function HeroSection({ hero }) {
@@ -15,7 +15,6 @@ export default function HeroSection({ hero }) {
   const isTitleRichText = title?.nodeType === "document";
   const isSubtitleRichText = subtitle?.nodeType === "document";
 
-  // ✅ Find first button image (for "Dashboard of the Month" special layout)
   let firstButtonImageUrl = null;
   if (
     Array.isArray(buttons) &&
@@ -24,7 +23,6 @@ export default function HeroSection({ hero }) {
     firstButtonImageUrl = `https:${buttons[0].fields.iconOrImage.fields.file.url}`;
   }
 
-  // ✅ Check if this Hero is "Dashboard Of The Month"
   const isDashboardOfMonth = title && (
     (typeof title === "string" && title === "Dashboard Of The Month") ||
     (typeof title !== "string" && title?.content?.[0]?.content?.[0]?.value === "Dashboard Of The Month")
@@ -33,9 +31,8 @@ export default function HeroSection({ hero }) {
   return (
     <section className="bg-white text-black p-10 mt-16 mb-16 rounded-lg shadow-md border">
       {isDashboardOfMonth ? (
-        // ✅ Special layout for "Dashboard Of The Month"
         <div className="flex flex-col md:flex-row items-center gap-8">
-          {/* Text block on left */}
+          {/* Text block */}
           <div className="flex-1 text-center md:text-left">
             {title && (
               <h2 className="text-3xl font-bold mb-4">
@@ -63,22 +60,23 @@ export default function HeroSection({ hero }) {
             )}
           </div>
 
-          {/* Image block on right */}
+          {/* Image block */}
           {firstButtonImageUrl && (
             <div className="flex-1 flex justify-center">
-              <Image
-                src={firstButtonImageUrl}
-                alt="Dashboard Preview"
-                width={400}
-                height={400}
-                className="rounded shadow-md object-contain"
-                unoptimized
-              />
+              <div className="max-w-[250px] max-h-[250px]">
+                <Image
+                  src={firstButtonImageUrl}
+                  alt="Dashboard Preview"
+                  width={250}
+                  height={250}
+                  className="rounded shadow-md object-contain w-full h-full"
+                  unoptimized
+                />
+              </div>
             </div>
           )}
         </div>
       ) : (
-        // ✅ Normal layout for other sections
         <>
           {title && (
             <h2 className="text-3xl font-bold mb-4 text-center">
