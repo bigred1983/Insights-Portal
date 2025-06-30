@@ -7,47 +7,37 @@ import SideMenu from "@/components/SideMenu";
 import HeroSection from "@/components/HeroSection";
 import { notFound } from "next/navigation";
 
+// 🧠 Set up Contentful client
 const client = createClient({
   space: process.env.CONTENTFUL_SPACE_ID,
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
   environment: "master",
 });
 
-// ✅ Let Next.js know this route supports dynamic params
-export const dynamicParams = true;
-export const revalidate = 60;
-
-// ✅ Generate static paths at build time
-export async function generateStaticParams() {
-  try {
-    const res = await client.getEntries({ content_type: "page" });
-    const slugs = res.items.map((item) => {
-      // Convert slug to lowercase and hyphens
-      return item.fields.slug.toLowerCase().replace(/_/g, "-");
-    });
-
-    return slugs.map((slug) => ({ slug }));
-  } catch (error) {
-    console.error("❌ Error generating static params:", error);
-    return [];
-  }
-}
-
-// ✅ Dynamic page loader
+// 🧭 Dynamic page for [slug]
 export default async function Page({ params }) {
-  let slug = params?.slug;
-  if (!slug) return notFound();
+  const slug = params?.slug;
 
-  // Convert URL slug back to Contentful style (replace hyphens with underscores)
-  const realSlug = slug.replace(/-/g, "_");
+  console.log("🛰️ Incoming slug from URL:", slug);
 
+  if (!slug) {
+    console.error("❌ No slug found");
+    return notFound();
+  }
+
+  // 🔍 Query Contentful for the page with this slug
   const res = await client.getEntries({
     content_type: "page",
-    "fields.slug": realSlug,
+    "fields.slug": slug,
     include: 2,
   });
 
-  if (!res.items.length) return notFound();
+  console.log("🔍 Found entries:", res.items.length);
+
+  if (!res.items.length) {
+    console.error("❌ No page found for slug:", slug);
+    return notFound();
+  }
 
   const page = res.items[0].fields;
   const contentBlocks = Array.isArray(page.contentBlocks) ? page.contentBlocks : [];
@@ -90,4 +80,13 @@ export default async function Page({ params }) {
       </div>
     </div>
   );
+}
+
+// 🏗️ Tell Next.js what pages to pre-build at build time
+export async function generateStaticParams() {
+  const res = await client.getEntries({ content_type: "page" });
+
+  return res.items.map((item) => ({
+    slug: item.fields.slug,
+  }));
 }
