@@ -62,7 +62,7 @@ export default async function Home() {
       {contentBlocks.length === 0 ? (
         <p className="text-center text-gray-400">No content blocks found.</p>
       ) : (
-        contentBlocks.map((block, index) => {
+        contentBlocks.map((block) => {
           const typeId = block?.sys?.contentType?.sys?.id;
 
           switch (typeId) {
@@ -76,15 +76,16 @@ export default async function Home() {
               return <TeamMember key={block.sys.id} member={block} />;
             case "button":
               return <Button key={block.sys.id} button={block} />;
-            default:
+            default: {
               return (
                 <div
-                  key={index}
+                  key={block.sys.id}
                   className="p-4 my-4 bg-yellow-100 text-yellow-800 rounded"
                 >
                   ⚠ Unsupported content type: {typeId}
                 </div>
               );
+            }
           }
         })
       )}
