@@ -14,12 +14,13 @@ export default function HeroSection({ hero }) {
     ? `https:${buttons[0].fields.iconOrImage.fields.file.url}`
     : null;
 
-  const isDashboardOfMonth = title &&
-    ((typeof title === "string" && title === "Dashboard Of The Month") ||
-    (typeof title !== "string" && title?.content?.[0]?.content?.[0]?.value === "Dashboard Of The Month"));
+  const isDashboardOfMonth =
+    (typeof title === "string" && title === "Dashboard Of The Month") ||
+    (typeof title !== "string" &&
+      title?.content?.[0]?.content?.[0]?.value === "Dashboard Of The Month");
 
   return (
-    <section className="bg-white p-8 md:p-10 rounded-xl shadow mb-10 border border-gray-200 max-w-4xl mx-auto">
+    <section className="bg-white p-8 md:p-10 rounded-xl shadow mb-10 border border-gray-200">
       {isDashboardOfMonth ? (
         <div className="flex flex-col md:flex-row items-center gap-8">
           {/* Left: Text */}
@@ -31,13 +32,17 @@ export default function HeroSection({ hero }) {
             )}
             {subtitle && (
               <div className="text-gray-700 text-base leading-relaxed mb-6">
-                {isSubtitleRichText ? documentToReactComponents(subtitle) : subtitle}
+                {isSubtitleRichText
+                  ? documentToReactComponents(subtitle)
+                  : subtitle}
               </div>
             )}
             {buttons?.length > 0 && (
               <div className="flex flex-wrap justify-center md:justify-start gap-4">
                 {buttons.map((button) =>
-                  button?.fields ? <Button key={button.sys.id} button={button} /> : null
+                  button?.fields ? (
+                    <Button key={button.sys.id} button={button} />
+                  ) : null
                 )}
               </div>
             )}
@@ -68,13 +73,17 @@ export default function HeroSection({ hero }) {
           )}
           {subtitle && (
             <div className="text-base text-gray-700 text-center mb-6">
-              {isSubtitleRichText ? documentToReactComponents(subtitle) : subtitle}
+              {isSubtitleRichText
+                ? documentToReactComponents(subtitle)
+                : subtitle}
             </div>
           )}
           {buttons?.length > 0 && (
             <div className="flex flex-wrap justify-center gap-4">
               {buttons.map((button) =>
-                button?.fields ? <Button key={button.sys.id} button={button} /> : null
+                button?.fields ? (
+                  <Button key={button.sys.id} button={button} />
+                ) : null
               )}
             </div>
           )}
