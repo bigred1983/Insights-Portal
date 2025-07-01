@@ -19,9 +19,10 @@ export default function HeroSection({ hero }) {
     (typeof title !== "string" && title?.content?.[0]?.content?.[0]?.value === "Dashboard Of The Month"));
 
   return (
-    <section className="bg-white p-10 rounded-xl shadow mb-10 border border-gray-200">
+    <section className="bg-white p-8 md:p-10 rounded-xl shadow mb-10 border border-gray-200 max-w-4xl mx-auto">
       {isDashboardOfMonth ? (
         <div className="flex flex-col md:flex-row items-center gap-8">
+          {/* Left: Text */}
           <div className="flex-1 text-center md:text-left">
             {title && (
               <h2 className="text-3xl font-bold mb-4">
@@ -29,10 +30,8 @@ export default function HeroSection({ hero }) {
               </h2>
             )}
             {subtitle && (
-              <div className="text-gray-700 text-lg mb-6">
-                {isSubtitleRichText
-                  ? documentToReactComponents(subtitle)
-                  : subtitle}
+              <div className="text-gray-700 text-base leading-relaxed mb-6">
+                {isSubtitleRichText ? documentToReactComponents(subtitle) : subtitle}
               </div>
             )}
             {buttons?.length > 0 && (
@@ -44,16 +43,19 @@ export default function HeroSection({ hero }) {
             )}
           </div>
 
+          {/* Right: Larger Image */}
           {imageUrl && (
             <div className="flex-1 flex justify-center">
-              <Image
-                src={imageUrl}
-                alt="Dashboard preview"
-                width={250}
-                height={250}
-                className="rounded-lg shadow"
-                unoptimized
-              />
+              <div className="w-[375px] max-w-full">
+                <Image
+                  src={imageUrl}
+                  alt="Dashboard preview"
+                  width={375}
+                  height={375}
+                  className="rounded-lg shadow object-contain w-full h-auto"
+                  unoptimized
+                />
+              </div>
             </div>
           )}
         </div>
@@ -65,7 +67,7 @@ export default function HeroSection({ hero }) {
             </h2>
           )}
           {subtitle && (
-            <div className="text-lg text-gray-700 text-center mb-6">
+            <div className="text-base text-gray-700 text-center mb-6">
               {isSubtitleRichText ? documentToReactComponents(subtitle) : subtitle}
             </div>
           )}
