@@ -42,24 +42,23 @@ export default async function Home() {
   const contentBlocks = Array.isArray(page.contentBlocks) ? page.contentBlocks : [];
 
   return (
-    <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
-      {/* Page title */}
-      <h1 className="text-4xl font-bold text-center mb-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 className="text-5xl font-extrabold tracking-tight text-center text-gray-900 mb-6">
         {page.title || "Untitled Page"}
       </h1>
 
       {/* 📌 Welcome Message */}
-      <div className="bg-white text-black border border-gray-300 rounded-xl p-4 mb-8 text-sm md:text-base text-center shadow-sm">
-        <div className="flex justify-center items-center gap-2 mb-1 text-xl">
+      <div className="bg-blue-50 text-blue-900 border border-blue-200 rounded-2xl px-6 py-4 mb-10 shadow-sm text-center text-base">
+        <div className="flex justify-center items-center gap-2 mb-1 text-xl font-semibold">
           <span role="img" aria-label="pin">📌</span>
-          <strong>Welcome to the Contentful Insights Portal!</strong>
+          Welcome to the Contentful Insights Portal!
         </div>
         <p>
           Set this site as your homepage so you have the latest information on what data is telling us about Contentful &amp; our customers.
         </p>
       </div>
 
-      {/* Content blocks */}
+      {/* Render Contentful blocks */}
       {contentBlocks.length === 0 ? (
         <p className="text-center text-gray-400">No content blocks found.</p>
       ) : (
