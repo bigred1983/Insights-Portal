@@ -43,10 +43,23 @@ export default async function Home() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h1 className="text-4xl font-bold text-center mb-10">
+      {/* Page title */}
+      <h1 className="text-4xl font-bold text-center mb-6">
         {page.title || "Untitled Page"}
       </h1>
 
+      {/* 📌 Welcome Message */}
+      <div className="bg-blue-100 text-blue-900 border border-blue-300 rounded-xl p-4 mb-8 text-sm md:text-base text-center shadow-sm">
+        <div className="flex justify-center items-center gap-2 mb-1 text-blue-700 text-xl">
+          <span role="img" aria-label="pin">📌</span>
+          <strong>Welcome to the Contentful Insights Portal!</strong>
+        </div>
+        <p>
+          Set this site as your homepage so you have the latest information on what data is telling us about Contentful &amp; our customers.
+        </p>
+      </div>
+
+      {/* Content blocks */}
       {contentBlocks.length === 0 ? (
         <p className="text-center text-gray-400">No content blocks found.</p>
       ) : (
