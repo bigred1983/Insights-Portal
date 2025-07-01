@@ -1,7 +1,9 @@
 export default function Button({ button }) {
   if (!button?.fields) return null;
 
-  // Extract image URL if present
+  const label = button.fields.label || "Click Here";
+  const url = button.fields.destinationUrl || "#";
+
   const imageUrl = button.fields.iconOrImage?.fields?.file?.url
     ? `https:${button.fields.iconOrImage.fields.file.url}`
     : null;
@@ -12,19 +14,20 @@ export default function Button({ button }) {
       {imageUrl && (
         <img
           src={imageUrl}
-          alt={button.fields.label || "Button Icon"}
-          className="mx-auto mb-3 w-28 h-28 object-contain"
+          alt={label}
+          className="mx-auto mb-4 w-32 h-32 object-contain"
         />
       )}
 
-      {/* Clickable Button */}
+      {/* Larger Button */}
       <a
-        href={button.fields.destinationUrl || "#"}
-        className="inline-block border-2 border-black px-6 py-3 font-semibold text-black bg-white rounded-lg shadow hover:bg-gray-100 transition"
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-block border-2 border-black px-8 py-4 text-lg font-semibold text-black bg-white rounded-lg shadow hover:bg-gray-100 transition"
       >
-        {button.fields.label || "Click Here"}
+        {label}
       </a>
     </div>
   );
 }
-
