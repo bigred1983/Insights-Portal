@@ -12,15 +12,24 @@ export default function SectionBlock({ block }) {
   const isRichText = description?.nodeType === "document";
 
   return (
-    <div className="bg-blue-600 text-white p-8 rounded-2xl shadow-md my-8">
-      {title && <h2 className="text-2xl font-semibold mb-4">{title}</h2>}
+    <div className="bg-white border border-gray-200 rounded-2xl shadow-md p-8 my-8">
+      {/* Title */}
+      {title && (
+        <h2 className="text-2xl font-bold text-gray-900 mb-4 tracking-tight">
+          {title}
+        </h2>
+      )}
 
+      {/* Description */}
       {description && (
-        <div className="text-base leading-relaxed mb-6">
-          {isRichText ? documentToReactComponents(description) : description}
+        <div className="text-base text-gray-700 leading-relaxed mb-6">
+          {isRichText
+            ? documentToReactComponents(description)
+            : description}
         </div>
       )}
 
+      {/* Image */}
       {imageUrl && (
         <div className="flex justify-center mb-6">
           <Image
@@ -34,6 +43,7 @@ export default function SectionBlock({ block }) {
         </div>
       )}
 
+      {/* Buttons */}
       {Array.isArray(buttons) && buttons.length > 0 && (
         <div className="flex flex-wrap justify-center gap-4">
           {buttons.map((button) =>
