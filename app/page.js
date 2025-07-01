@@ -41,6 +41,15 @@ export default async function Home() {
 
   const contentBlocks = Array.isArray(page.contentBlocks) ? page.contentBlocks : [];
 
+  // Separate team members from other blocks
+  const teamMembers = contentBlocks.filter(
+    (block) => block?.sys?.contentType?.sys?.id === "teamMember"
+  );
+
+  const otherBlocks = contentBlocks.filter(
+    (block) => block?.sys?.contentType?.sys?.id !== "teamMember"
+  );
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <h1 className="text-5xl font-extrabold tracking-tight text-center text-gray-900 mb-6">
@@ -58,36 +67,44 @@ export default async function Home() {
         </p>
       </div>
 
-      {/* Render Contentful blocks */}
-      {contentBlocks.length === 0 ? (
-        <p className="text-center text-gray-400">No content blocks found.</p>
-      ) : (
-        contentBlocks.map((block) => {
-          const typeId = block?.sys?.contentType?.sys?.id;
+      {/* Render all blocks except team members */}
+      {otherBlocks.map((block) => {
+        const typeId = block?.sys?.contentType?.sys?.id;
 
-          switch (typeId) {
-            case "section":
-              return <SectionBlock key={block.sys.id} block={block} />;
-            case "heroSection":
-              return <HeroSection key={block.sys.id} hero={block} />;
-            case "featureItem":
-              return <FeatureItem key={block.sys.id} feature={block} />;
-            case "teamMember":
-              return <TeamMember key={block.sys.id} member={block} />;
-            case "button":
-              return <Button key={block.sys.id} button={block} />;
-            default: {
-              return (
-                <div
-                  key={block.sys.id}
-                  className="p-4 my-4 bg-yellow-100 text-yellow-800 rounded"
-                >
-                  ⚠ Unsupported content type: {typeId}
-                </div>
-              );
-            }
+        switch (typeId) {
+          case "section":
+            return <SectionBlock key={block.sys.id} block={block} />;
+          case "heroSection":
+            return <HeroSection key={block.sys.id} hero={block} />;
+          case "featureItem":
+            return <FeatureItem key={block.sys.id} feature={block} />;
+          case "button":
+            return <Button key={block.sys.id} button={block} />;
+          default: {
+            return (
+              <div
+                key={block.sys.id}
+                className="p-4 my-4 bg-yellow-100 text-yellow-800 rounded"
+              >
+                ⚠ Unsupported content type: {typeId}
+              </div>
+            );
           }
-        })
+        }
+      })}
+
+      {/* ✅ Wrap all TeamMember cards together in a flex row */}
+      {teamMembers.length > 0 && (
+        <div className="mt-12">
+          <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">
+            Meet the Team
+          </h2>
+          <div className="flex flex-wrap justify-center gap-6">
+            {teamMembers.map((block) => (
+              <TeamMember key={block.sys.id} member={block} />
+            ))}
+          </div>
+        </div>
       )}
     </div>
   );
