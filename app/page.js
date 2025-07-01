@@ -110,9 +110,11 @@ export default async function Home() {
             Meet the Team
           </h2>
           <div className="flex flex-wrap justify-center gap-6">
-            {teamMembers.map((block) => (
-              <TeamMember key={block.sys.id} member={block} />
-            ))}
+            {teamMembers.map((block) =>
+              block?.fields ? (
+                <TeamMember key={block.sys.id} member={block} />
+              ) : null
+            )}
           </div>
         </div>
       )}
