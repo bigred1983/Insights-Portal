@@ -3,8 +3,7 @@ import SectionBlock from "@/components/SectionBlock";
 import FeatureItem from "@/components/FeatureItem";
 import TeamMember from "@/components/TeamMember";
 import Button from "@/components/Button";
-import SideMenu from "@/components/SideMenu";
-import HeroSection from "@/components/HeroSection"; // ✅ Ensure this is imported
+import HeroSection from "@/components/HeroSection";
 
 // Setup Contentful client
 const client = createClient({
@@ -21,12 +20,7 @@ async function fetchPageData() {
       include: 2,
     });
 
-    if (!res.items.length) {
-      console.warn("⚠ No homepage content found.");
-      return null;
-    }
-
-    return res.items[0].fields;
+    return res.items[0]?.fields || null;
   } catch (err) {
     console.error("❌ Failed to fetch homepage data:", err);
     return null;
@@ -45,54 +39,43 @@ export default async function Home() {
     );
   }
 
-  const contentBlocks = Array.isArray(page.contentBlocks)
-    ? page.contentBlocks
-    : [];
+  const contentBlocks = Array.isArray(page.contentBlocks) ? page.contentBlocks : [];
 
   return (
-    <div className="relative flex">
-      <SideMenu />
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 className="text-4xl font-bold text-center mb-10">
+        {page.title || "Untitled Page"}
+      </h1>
 
-      <div className="text-center p-12 w-full">
-        <h1 className="text-4xl font-bold mb-6">
-          {page.title || "Untitled Page"}
-        </h1>
+      {contentBlocks.length === 0 ? (
+        <p className="text-center text-gray-400">No content blocks found.</p>
+      ) : (
+        contentBlocks.map((block, index) => {
+          const typeId = block?.sys?.contentType?.sys?.id;
 
-        {contentBlocks.length === 0 ? (
-          <p className="text-gray-400">No content blocks found.</p>
-        ) : (
-          contentBlocks.map((block, index) => {
-            const typeId = block?.sys?.contentType?.sys?.id;
-
-            // ✅ DEBUG LOGS (will show in Netlify build logs)
-            console.log("🔍 Block index:", index);
-            console.log("🧪 Block type:", typeId);
-            console.log("📦 Block fields:", block?.fields);
-
-            switch (typeId) {
-              case "section":
-                return <SectionBlock key={block.sys.id} block={block} />;
-              case "heroSection":
-                return <HeroSection key={block.sys.id} hero={block} />;
-              case "featureItem":
-                return <FeatureItem key={block.sys.id} feature={block} />;
-              case "teamMember":
-                return <TeamMember key={block.sys.id} member={block} />;
-              case "button":
-                return <Button key={block.sys.id} button={block} />;
-              default:
-                return (
-                  <div
-                    key={index}
-                    className="p-4 my-4 bg-yellow-100 text-yellow-800 rounded"
-                  >
-                    ⚠ Unsupported content type: {typeId}
-                  </div>
-                );
-            }
-          })
-        )}
-      </div>
+          switch (typeId) {
+            case "section":
+              return <SectionBlock key={block.sys.id} block={block} />;
+            case "heroSection":
+              return <HeroSection key={block.sys.id} hero={block} />;
+            case "featureItem":
+              return <FeatureItem key={block.sys.id} feature={block} />;
+            case "teamMember":
+              return <TeamMember key={block.sys.id} member={block} />;
+            case "button":
+              return <Button key={block.sys.id} button={block} />;
+            default:
+              return (
+                <div
+                  key={index}
+                  className="p-4 my-4 bg-yellow-100 text-yellow-800 rounded"
+                >
+                  ⚠ Unsupported content type: {typeId}
+                </div>
+              );
+          }
+        })
+      )}
     </div>
   );
 }
