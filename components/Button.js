@@ -11,15 +11,17 @@ export default function Button({ button }) {
   return (
     <div className="text-center">
       {/* Optional Image */}
-      {imageUrl && (
+      {imageUrl ? (
         <img
           src={imageUrl}
           alt={label}
           className="mx-auto mb-4 w-32 h-32 object-contain"
         />
+      ) : (
+        <></>
       )}
 
-      {/* Larger Button */}
+      {/* Button */}
       <a
         href={url}
         target="_blank"
