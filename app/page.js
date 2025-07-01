@@ -27,7 +27,8 @@ async function fetchPageData() {
   }
 }
 
-// Home page component
+// Minor formatting update for clean GitHub commit.
+
 export default async function Home() {
   const page = await fetchPageData();
 
@@ -41,14 +42,17 @@ export default async function Home() {
 
   const contentBlocks = Array.isArray(page.contentBlocks) ? page.contentBlocks : [];
 
-  // Separate team members from other blocks
-  const teamMembers = contentBlocks.filter(
-    (block) => block?.sys?.contentType?.sys?.id === "teamMember"
-  );
+  const teamMembers = [];
+  const otherBlocks = [];
 
-  const otherBlocks = contentBlocks.filter(
-    (block) => block?.sys?.contentType?.sys?.id !== "teamMember"
-  );
+  contentBlocks.forEach((block) => {
+    const typeId = block?.sys?.contentType?.sys?.id;
+    if (typeId === "teamMember") {
+      teamMembers.push(block);
+    } else {
+      otherBlocks.push(block);
+    }
+  });
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -67,33 +71,39 @@ export default async function Home() {
         </p>
       </div>
 
-      {/* Render all blocks except team members */}
+      {/* All non-team blocks */}
       {otherBlocks.map((block) => {
         const typeId = block?.sys?.contentType?.sys?.id;
+        const key = block.sys.id;
 
-        switch (typeId) {
-          case "section":
-            return <SectionBlock key={block.sys.id} block={block} />;
-          case "heroSection":
-            return <HeroSection key={block.sys.id} hero={block} />;
-          case "featureItem":
-            return <FeatureItem key={block.sys.id} feature={block} />;
-          case "button":
-            return <Button key={block.sys.id} button={block} />;
-          default: {
-            return (
-              <div
-                key={block.sys.id}
-                className="p-4 my-4 bg-yellow-100 text-yellow-800 rounded"
-              >
-                ⚠ Unsupported content type: {typeId}
-              </div>
-            );
-          }
+        if (typeId === "section") {
+          return <SectionBlock key={key} block={block} />;
         }
+
+        if (typeId === "heroSection") {
+          return <HeroSection key={key} hero={block} />;
+        }
+
+        if (typeId === "featureItem") {
+          return <FeatureItem key={key} feature={block} />;
+        }
+
+        if (typeId === "button") {
+          return <Button key={key} button={block} />;
+        }
+
+        // fallback block for unsupported types
+        return (
+          <div
+            key={key}
+            className="p-4 my-4 bg-yellow-100 text-yellow-800 rounded"
+          >
+            ⚠ Unsupported content type: {typeId}
+          </div>
+        );
       })}
 
-      {/* ✅ Wrap all TeamMember cards together in a flex row */}
+      {/* Team members rendered in flex row */}
       {teamMembers.length > 0 && (
         <div className="mt-12">
           <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">
