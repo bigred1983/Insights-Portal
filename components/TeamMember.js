@@ -8,7 +8,7 @@ export default function TeamMember({ member }) {
     : null;
 
   return (
-    <div className="bg-white text-center p-6 rounded-xl shadow-md w-64 m-4">
+    <div className="bg-white text-center p-6 rounded-2xl shadow-md w-64">
       {imageUrl ? (
         <Image
           src={imageUrl}
@@ -23,8 +23,12 @@ export default function TeamMember({ member }) {
         <p className="text-gray-400">No profile image available</p>
       )}
 
-      <h3 className="text-lg font-bold">{member.fields.name || "Unnamed"}</h3>
-      <p className="text-sm text-gray-600">{member.fields.role || "No role listed"}</p>
+      <h3 className="text-lg font-bold text-gray-900">
+        {member.fields.name || "Unnamed"}
+      </h3>
+      <p className="text-sm text-gray-600">
+        {member.fields.role || "No role listed"}
+      </p>
     </div>
   );
 }
