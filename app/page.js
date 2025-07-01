@@ -49,8 +49,8 @@ export default async function Home() {
       </h1>
 
       {/* 📌 Welcome Message */}
-      <div className="bg-blue-100 text-blue-900 border border-blue-300 rounded-xl p-4 mb-8 text-sm md:text-base text-center shadow-sm">
-        <div className="flex justify-center items-center gap-2 mb-1 text-blue-700 text-xl">
+      <div className="bg-white text-black border border-gray-300 rounded-xl p-4 mb-8 text-sm md:text-base text-center shadow-sm">
+        <div className="flex justify-center items-center gap-2 mb-1 text-xl">
           <span role="img" aria-label="pin">📌</span>
           <strong>Welcome to the Contentful Insights Portal!</strong>
         </div>
