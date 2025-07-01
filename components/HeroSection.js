@@ -20,18 +20,18 @@ export default function HeroSection({ hero }) {
       title?.content?.[0]?.content?.[0]?.value === "Dashboard Of The Month");
 
   return (
-    <section className="bg-white p-8 md:p-10 rounded-xl shadow mb-10 border border-gray-200">
+    <section className="bg-white p-8 md:p-10 rounded-2xl shadow-lg mb-10 border border-gray-200">
       {isDashboardOfMonth ? (
         <div className="flex flex-col md:flex-row items-center gap-8">
-          {/* Left: Text */}
+          {/* Text block */}
           <div className="flex-1 text-center md:text-left">
             {title && (
-              <h2 className="text-3xl font-bold mb-4">
+              <h2 className="text-3xl font-extrabold mb-4 tracking-tight text-gray-900">
                 {isTitleRichText ? documentToReactComponents(title) : title}
               </h2>
             )}
             {subtitle && (
-              <div className="text-gray-700 text-base leading-relaxed mb-6">
+              <div className="text-base leading-relaxed text-gray-600 mb-6">
                 {isSubtitleRichText
                   ? documentToReactComponents(subtitle)
                   : subtitle}
@@ -48,7 +48,7 @@ export default function HeroSection({ hero }) {
             )}
           </div>
 
-          {/* Right: Larger Image */}
+          {/* Image */}
           {imageUrl && (
             <div className="flex-1 flex justify-center">
               <div className="w-[375px] max-w-full">
@@ -57,7 +57,7 @@ export default function HeroSection({ hero }) {
                   alt="Dashboard preview"
                   width={375}
                   height={375}
-                  className="rounded-lg shadow object-contain w-full h-auto"
+                  className="rounded-xl shadow object-contain w-full h-auto"
                   unoptimized
                 />
               </div>
@@ -67,12 +67,12 @@ export default function HeroSection({ hero }) {
       ) : (
         <>
           {title && (
-            <h2 className="text-3xl font-bold mb-4 text-center">
+            <h2 className="text-3xl font-extrabold text-center mb-4 tracking-tight text-gray-900">
               {isTitleRichText ? documentToReactComponents(title) : title}
             </h2>
           )}
           {subtitle && (
-            <div className="text-base text-gray-700 text-center mb-6">
+            <div className="text-base text-gray-600 text-center mb-6">
               {isSubtitleRichText
                 ? documentToReactComponents(subtitle)
                 : subtitle}
