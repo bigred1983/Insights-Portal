@@ -13,18 +13,18 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "My Contentful Site",
-  description: "A dynamic site powered by Contentful and Next.js",
+  title: "Contentful Insights Portal",
+  description: "Live dashboards, metrics, and team knowledge powered by Contentful.",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 text-gray-900`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#F9FAFB] text-gray-900`}
       >
         <SideMenu />
-        <main className="pt-6 md:pt-12 pl-0 md:pl-72 transition-all duration-300">
+        <main className="pt-6 md:pt-10 pl-0 md:pl-72 transition-all duration-300">
           {children}
         </main>
       </body>
