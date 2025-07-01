@@ -1,35 +1,30 @@
 export default function Button({ button }) {
-  console.log("🔎 Button data:", button);
+  if (!button?.fields) return null;
 
-  if (!button || !button.fields) {
-    console.warn("⚠️ Button missing fields:", button);
-    return null;
-  }
-
-  // Extract image URL
-  let imageUrl = null;
-  if (button.fields.iconOrImage && button.fields.iconOrImage.fields?.file?.url) {
-    imageUrl = `https:${button.fields.iconOrImage.fields.file.url}`;
-  }
+  // Extract image URL if present
+  const imageUrl = button.fields.iconOrImage?.fields?.file?.url
+    ? `https:${button.fields.iconOrImage.fields.file.url}`
+    : null;
 
   return (
-    <div className="inline-block text-center p-4">
-      {/* Image */}
+    <div className="text-center">
+      {/* Optional Image */}
       {imageUrl && (
         <img
           src={imageUrl}
-          alt={button.fields.label || "Button Image"}
-          className="mx-auto mb-4 w-48 h-48 object-contain" // ✅ Bigger image: ~4x bigger (was 12w x 12h before)
+          alt={button.fields.label || "Button Icon"}
+          className="mx-auto mb-3 w-28 h-28 object-contain"
         />
       )}
 
-      {/* Button */}
+      {/* Clickable Button */}
       <a
         href={button.fields.destinationUrl || "#"}
-        className="border-2 border-black text-black bg-white font-semibold py-3 px-6 rounded-lg shadow hover:bg-gray-100 transition"
+        className="inline-block border-2 border-black px-6 py-3 font-semibold text-black bg-white rounded-lg shadow hover:bg-gray-100 transition"
       >
         {button.fields.label || "Click Here"}
       </a>
     </div>
   );
 }
+

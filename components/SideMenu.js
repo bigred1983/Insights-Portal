@@ -8,20 +8,18 @@ export default function SideMenu() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [pages, setPages] = useState([]);
 
-  // Connect to Contentful
   const client = createClient({
     space: process.env.CONTENTFUL_SPACE_ID,
     accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
   });
 
-  // Fetch all page slugs on load
   useEffect(() => {
     async function fetchPages() {
       try {
         const res = await client.getEntries({ content_type: "page" });
         setPages(res.items.map((item) => item.fields.slug));
       } catch (error) {
-        console.error("❌ Error fetching pages from Contentful:", error);
+        console.error("❌ Error fetching pages:", error);
       }
     }
     fetchPages();
@@ -29,21 +27,19 @@ export default function SideMenu() {
 
   return (
     <>
-      {/* Toggle Button */}
       <button
         onClick={() => setMenuOpen(!menuOpen)}
-        className="fixed top-5 left-5 z-50 bg-gray-900 text-white px-4 py-2 rounded-md"
+        className="fixed top-4 left-4 z-50 bg-gray-900 text-white px-4 py-2 rounded-md shadow hover:bg-gray-700 transition"
       >
         {menuOpen ? "Close Menu" : "Open Menu"}
       </button>
 
-      {/* Side Menu */}
-      <div
-        className={`fixed top-0 left-0 h-full w-64 bg-gray-800 text-white p-5 transform transition-transform duration-300 ${
+      <aside
+        className={`fixed top-0 left-0 h-full w-64 bg-gray-900 text-white p-6 z-40 transform transition-transform duration-300 ${
           menuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <h2 className="text-lg font-bold mb-4">📄 Pages</h2>
+        <h2 className="text-xl font-bold mb-6">📄 Pages</h2>
 
         <ul className="space-y-2">
           {pages.length > 0 ? (
@@ -51,17 +47,17 @@ export default function SideMenu() {
               <li key={index}>
                 <Link
                   href={`/${slug}`}
-                  className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
+                  className="block px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 transition font-medium"
                 >
                   {slug.replace(/-/g, " ").toUpperCase()}
                 </Link>
               </li>
             ))
           ) : (
-            <p className="text-sm text-gray-400">No pages found.</p>
+            <li className="text-sm text-gray-400">No pages found.</li>
           )}
         </ul>
-      </div>
+      </aside>
     </>
   );
 }
