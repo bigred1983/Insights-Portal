@@ -42,7 +42,7 @@ export default async function Home() {
   const contentBlocks = Array.isArray(page.contentBlocks) ? page.contentBlocks : [];
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
       {/* Page title */}
       <h1 className="text-4xl font-bold text-center mb-6">
         {page.title || "Untitled Page"}
