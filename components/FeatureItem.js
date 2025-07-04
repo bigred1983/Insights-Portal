@@ -3,7 +3,7 @@ import Link from "next/link";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 
 export default function FeatureItem({ feature }) {
-  const { title, description, image, buttons } = feature.fields;
+  const { title, description, image, buttons, destinationUrl } = feature.fields;
 
   const imageUrl = image?.fields?.file?.url
     ? `https:${image.fields.file.url}`
@@ -16,14 +16,32 @@ export default function FeatureItem({ feature }) {
       {/* Image (Left on desktop) */}
       {imageUrl && (
         <div className="md:w-1/2 mb-6 md:mb-0 md:mr-6 flex justify-center items-start">
-          <Image
-            src={imageUrl}
-            alt={image?.fields?.title || "Feature Image"}
-            width={400}
-            height={300}
-            className="rounded-xl object-contain max-h-[300px] w-full"
-            unoptimized
-          />
+          {destinationUrl ? (
+            <a
+              href={destinationUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full"
+            >
+              <Image
+                src={imageUrl}
+                alt={image?.fields?.title || "Feature Image"}
+                width={400}
+                height={300}
+                className="rounded-xl object-contain max-h-[300px] w-full hover:opacity-90 transition"
+                unoptimized
+              />
+            </a>
+          ) : (
+            <Image
+              src={imageUrl}
+              alt={image?.fields?.title || "Feature Image"}
+              width={400}
+              height={300}
+              className="rounded-xl object-contain max-h-[300px] w-full"
+              unoptimized
+            />
+          )}
         </div>
       )}
 
