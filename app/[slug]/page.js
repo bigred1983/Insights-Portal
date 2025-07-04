@@ -4,7 +4,6 @@ import FeatureItem from "@/components/FeatureItem";
 import TeamMember from "@/components/TeamMember";
 import Button from "@/components/Button";
 import HeroSection from "@/components/HeroSection";
-import SearchBarWrapper from "@/components/SearchBarWrapper";
 import { notFound } from "next/navigation";
 
 // Setup Contentful client
@@ -37,14 +36,9 @@ export default async function Page({ params }) {
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h1 className="text-4xl font-bold text-center mb-4">
+      <h1 className="text-4xl font-bold text-center mb-10">
         {page.title || "Untitled Page"}
       </h1>
-
-      {/* 🔍 Safe search bar wrapper */}
-      <div className="max-w-xl mx-auto mb-10">
-        <SearchBarWrapper />
-      </div>
 
       {contentBlocks.length === 0 ? (
         <p className="text-center text-gray-400">No content blocks found.</p>
