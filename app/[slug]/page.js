@@ -4,7 +4,7 @@ import FeatureItem from "@/components/FeatureItem";
 import TeamMember from "@/components/TeamMember";
 import Button from "@/components/Button";
 import HeroSection from "@/components/HeroSection";
-import SearchBar from "@/components/SearchBar";
+import SearchBarWrapper from "@/components/SearchBarWrapper";
 import { notFound } from "next/navigation";
 
 // Setup Contentful client
@@ -41,9 +41,9 @@ export default async function Page({ params }) {
         {page.title || "Untitled Page"}
       </h1>
 
-      {/* 🔍 Search bar */}
+      {/* 🔍 Safe search bar wrapper */}
       <div className="max-w-xl mx-auto mb-10">
-        <SearchBar onSearch={(query) => console.log("Search query:", query)} />
+        <SearchBarWrapper />
       </div>
 
       {contentBlocks.length === 0 ? (
