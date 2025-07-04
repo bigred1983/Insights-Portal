@@ -27,8 +27,6 @@ async function fetchPageData() {
   }
 }
 
-// Minor formatting update for clean GitHub commit.
-
 export default async function Home() {
   const page = await fetchPageData();
 
@@ -103,13 +101,13 @@ export default async function Home() {
         );
       })}
 
-      {/* Team members rendered in flex row */}
+      {/* ✅ Team members rendered in responsive grid layout */}
       {teamMembers.length > 0 && (
         <div className="mt-12">
           <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">
             Meet the Team
           </h2>
-          <div className="flex flex-wrap justify-center gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {teamMembers.map((block) =>
               block?.fields ? (
                 <TeamMember key={block.sys.id} member={block} />
