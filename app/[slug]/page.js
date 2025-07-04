@@ -44,13 +44,17 @@ export default async function Page({ params }) {
         <p className="text-center text-gray-400">No content blocks found.</p>
       ) : (
         (() => {
+          let missionStatement = null;
           const teamMembers = [];
           const otherBlocks = [];
 
           contentBlocks.forEach((block) => {
             const typeId = block?.sys?.contentType?.sys?.id;
+
             if (typeId === "teamMember") {
               teamMembers.push(block);
+            } else if (typeId === "featureItem" && !missionStatement) {
+              missionStatement = block;
             } else {
               otherBlocks.push(block);
             }
@@ -58,6 +62,32 @@ export default async function Page({ params }) {
 
           return (
             <>
+              {/* 🔹 1. Mission Statement */}
+              {missionStatement && (
+                <FeatureItem key={missionStatement.sys.id} feature={missionStatement} />
+              )}
+
+              {/* 🔹 2. Team Members */}
+              {teamMembers.length > 0 && (
+                <div className="mt-12 mb-16">
+                  <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">
+                    Meet the Team
+                  </h2>
+                  <div className="px-4 sm:px-6 lg:px-8">
+                    <div className="flex justify-center">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-fit">
+                        {teamMembers.map((member) => (
+                          <div key={member.sys.id} className="flex">
+                            <TeamMember member={member} />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* 🔹 3. Remaining Content */}
               {otherBlocks.map((block, index) => {
                 const typeId = block?.sys?.contentType?.sys?.id;
 
@@ -81,26 +111,7 @@ export default async function Page({ params }) {
                     );
                 }
               })}
-
-              {teamMembers.length > 0 && (
-                <div className="mt-12 mb-16">
-                  <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">
-                    Meet the Team
-                  </h2>
-                  <div className="px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-center">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-fit">
-                        {teamMembers.map((member) => (
-                          <div key={member.sys.id} className="flex">
-                            <TeamMember member={member} />
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </>
+          </>
           );
         })()
       )}
