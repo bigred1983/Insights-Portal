@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export', // ✅ New: enables static export for Pagefind
   images: {
     domains: ['images.ctfassets.net'], // ✅ Allows Contentful images
   },
@@ -11,5 +12,3 @@ const nextConfig = {
 };
 
 export default nextConfig;
-
-  
