@@ -15,11 +15,15 @@
   </head>
   <body>
     <h1>🔍 Search This Site</h1>
+
+    <!-- ✅ Search container -->
     <div id="search" class="pagefind-ui"></div>
 
+    <!-- ✅ Correct usage: instantiate PagefindUI with `new` -->
     <script type="module">
-      import "/pagefind/pagefind-ui.js";
-      window.PagefindUI({ element: "#search" });
+      import("/pagefind/pagefind-ui.js").then(() => {
+        new window.PagefindUI({ element: "#search" });
+      });
     </script>
   </body>
 </html>
