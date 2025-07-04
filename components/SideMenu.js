@@ -61,7 +61,6 @@ export default function SideMenu() {
     },
   ];
 
-  // Toggle expand/collapse
   const toggleExpand = (sectionId) => {
     setExpanded((prev) => ({
       ...prev,
@@ -85,12 +84,19 @@ export default function SideMenu() {
           menuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <h2 className="text-xl font-bold mb-6">📂 Navigation</h2>
+        <h2 className="text-xl font-bold mb-4">📂 Navigation</h2>
+
+        {/* 🔍 Search the Portal link */}
+        <Link
+          href="/static-search.html"
+          className="block px-4 py-2 mb-6 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-500 transition"
+        >
+          🔍 Search the Portal
+        </Link>
 
         <ul className="space-y-6">
           {groupedMenu.map((group) => (
             <li key={group.id}>
-              {/* Anchor link to main group page */}
               <Link
                 href={`/${group.slug}`}
                 className="block px-4 py-2 bg-gray-800 rounded-md font-semibold hover:bg-gray-700 transition"
@@ -98,7 +104,6 @@ export default function SideMenu() {
                 {group.label.toUpperCase()}
               </Link>
 
-              {/* Expand/collapse toggle */}
               <button
                 onClick={() => toggleExpand(group.id)}
                 className="text-sm text-left w-full mt-1 px-4 py-1 text-gray-300 hover:text-white"
@@ -106,7 +111,6 @@ export default function SideMenu() {
                 {expanded[group.id] ? "− Hide Subpages" : "+ Show Subpages"}
               </button>
 
-              {/* Subpage links */}
               {expanded[group.id] && (
                 <ul className="ml-4 mt-2 space-y-2">
                   {group.children.map((slug) =>
