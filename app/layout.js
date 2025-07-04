@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import SideMenu from "@/components/SideMenu";
+import SearchBarWrapper from "@/components/SearchBarWrapper"; // ✅ NEW
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,6 +26,12 @@ export default function RootLayout({ children }) {
       >
         <SideMenu />
         <main className="pt-6 md:pt-10 pl-0 md:pl-72 transition-all duration-300">
+          {/* 🔍 Search bar visible at top of all pages */}
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
+            <SearchBarWrapper />
+          </div>
+
+          {/* Page content */}
           {children}
         </main>
       </body>
