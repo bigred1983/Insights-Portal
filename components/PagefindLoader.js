@@ -4,15 +4,18 @@ import { useEffect } from 'react';
 
 export default function PagefindLoader() {
   useEffect(() => {
-    // Only run in the browser
     if (typeof window !== 'undefined') {
-      import('/pagefind/pagefind.js').then(() => {
-        window.PagefindUI({
-          element: '#search'
-        });
-      });
+      const script = document.createElement('script');
+      script.src = '/pagefind/pagefind.js';
+      script.type = 'module';
+      script.onload = () => {
+        if (window.PagefindUI) {
+          window.PagefindUI({ element: '#search' });
+        }
+      };
+      document.body.appendChild(script);
     }
   }, []);
 
-  return null; // No UI needed, just runs the script
+  return null;
 }
