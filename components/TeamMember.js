@@ -12,17 +12,19 @@ export default function TeamMember({ member }) {
   return (
     <div className="bg-white text-center p-6 rounded-2xl shadow-md w-full h-full">
       {imageUrl ? (
-        <Image
-          src={imageUrl}
-          alt={member.fields.name || "Team Member"}
-          width={150}
-          height={150}
-          className="rounded-full mx-auto mb-4"
-          priority
-          unoptimized
-        />
+        <div className="w-[150px] h-[150px] rounded-full overflow-hidden mx-auto mb-4">
+          <Image
+            src={imageUrl}
+            alt={member.fields.name || "Team Member"}
+            width={150}
+            height={150}
+            className="object-cover w-full h-full"
+            priority
+            unoptimized
+          />
+        </div>
       ) : (
-        <p className="text-gray-400">No profile image available</p>
+        <p className="text-gray-400 mb-4">No profile image available</p>
       )}
 
       <h3 className="text-lg font-bold text-gray-900">

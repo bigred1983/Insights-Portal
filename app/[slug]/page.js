@@ -88,12 +88,14 @@ export default async function Page({ params }) {
                     Meet the Team
                   </h2>
                   <div className="px-4 sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                      {teamMembers.map((member) => (
-                        <div key={member.sys.id} className="flex">
-                          <TeamMember member={member} />
-                        </div>
-                      ))}
+                    <div className="flex justify-center">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-fit">
+                        {teamMembers.map((member) => (
+                          <div key={member.sys.id} className="flex">
+                            <TeamMember member={member} />
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
