@@ -6,16 +6,17 @@ export default function PagefindLoader() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const script = document.createElement('script');
-      script.src = '/pagefind/pagefind-ui.js'; // ✅ correct file
+      script.src = '/pagefind/pagefind-ui.js';
       script.type = 'module';
-      script.onload = () => {
+      document.body.appendChild(script);
+
+      // Poll until PagefindUI is available, then initialize it
+      const interval = setInterval(() => {
         if (window.PagefindUI) {
           window.PagefindUI({ element: '#search' });
-        } else {
-          console.error("❌ PagefindUI still not defined.");
+          clearInterval(interval);
         }
-      };
-      document.body.appendChild(script);
+      }, 200);
     }
   }, []);
 
