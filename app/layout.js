@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import SideMenu from "@/components/SideMenu";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -46,11 +47,13 @@ export default function RootLayout({ children }) {
           {children}
         </main>
 
-        {/* ✅ Load Pagefind as native module script */}
-        <script type="module" src="/pagefind/pagefind-ui.js"></script>
+        {/* ✅ Load Pagefind UI module */}
+        <Script src="/pagefind/pagefind-ui.js" strategy="afterInteractive" type="module" />
 
-        {/* ✅ Initialize Pagefind once DOM is ready */}
-        <script
+        {/* ✅ Safely initialize Pagefind */}
+        <Script
+          id="pagefind-init"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               window.addEventListener("DOMContentLoaded", () => {
