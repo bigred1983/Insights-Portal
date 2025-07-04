@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import SideMenu from "@/components/SideMenu";
-import Script from "next/script"; // ✅ Needed to load Pagefind script
+import PagefindLoader from "@/components/PagefindLoader"; // ✅
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,7 +22,6 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        {/* ✅ Load Pagefind styles */}
         <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
       </head>
       <body
@@ -31,17 +30,14 @@ export default function RootLayout({ children }) {
         <SideMenu />
 
         <main className="pt-6 md:pt-10 pl-0 md:pl-72 transition-all duration-300">
-          {/* ✅ Pagefind search bar */}
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
             <div id="search" className="pagefind-ui"></div>
           </div>
-
-          {/* Page content */}
           {children}
         </main>
 
-        {/* ✅ Load Pagefind script after page load */}
-        <Script src="/pagefind/pagefind.js" strategy="afterInteractive" />
+        {/* ✅ Load Pagefind via React client-only hook */}
+        <PagefindLoader />
       </body>
     </html>
   );
