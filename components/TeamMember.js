@@ -10,7 +10,7 @@ export default function TeamMember({ member }) {
     : null;
 
   return (
-    <div className="bg-white text-center p-6 rounded-2xl shadow-md w-64">
+    <div className="bg-white text-center p-6 rounded-2xl shadow-md w-full h-full">
       {imageUrl ? (
         <Image
           src={imageUrl}

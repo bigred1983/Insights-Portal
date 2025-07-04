@@ -83,14 +83,18 @@ export default async function Page({ params }) {
               })}
 
               {teamMembers.length > 0 && (
-                <div className="mt-12">
+                <div className="mt-12 mb-16">
                   <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">
                     Meet the Team
                   </h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    {teamMembers.map((member) => (
-                      <TeamMember key={member.sys.id} member={member} />
-                    ))}
+                  <div className="px-4 sm:px-6 lg:px-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                      {teamMembers.map((member) => (
+                        <div key={member.sys.id} className="flex">
+                          <TeamMember member={member} />
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               )}
