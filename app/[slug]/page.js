@@ -51,10 +51,14 @@ export default async function Page({ params }) {
           contentBlocks.forEach((block) => {
             const typeId = block?.sys?.contentType?.sys?.id;
 
-            if (typeId === "teamMember") {
-              teamMembers.push(block);
-            } else if (typeId === "featureItem" && !missionStatement) {
+            if (
+              typeId === "heroSection" &&
+              block.fields.title?.toLowerCase().includes("mission statement") &&
+              !missionStatement
+            ) {
               missionStatement = block;
+            } else if (typeId === "teamMember") {
+              teamMembers.push(block);
             } else {
               otherBlocks.push(block);
             }
@@ -62,9 +66,9 @@ export default async function Page({ params }) {
 
           return (
             <>
-              {/* 🔹 1. Mission Statement */}
+              {/* 🔹 1. Mission Statement Hero */}
               {missionStatement && (
-                <FeatureItem key={missionStatement.sys.id} feature={missionStatement} />
+                <HeroSection key={missionStatement.sys.id} hero={missionStatement} />
               )}
 
               {/* 🔹 2. Team Members */}
@@ -111,7 +115,7 @@ export default async function Page({ params }) {
                     );
                 }
               })}
-          </>
+            </>
           );
         })()
       )}
