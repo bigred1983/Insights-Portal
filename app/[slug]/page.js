@@ -43,31 +43,60 @@ export default async function Page({ params }) {
       {contentBlocks.length === 0 ? (
         <p className="text-center text-gray-400">No content blocks found.</p>
       ) : (
-        contentBlocks.map((block, index) => {
-          const typeId = block?.sys?.contentType?.sys?.id;
+        (() => {
+          const teamMembers = [];
+          const otherBlocks = [];
 
-          switch (typeId) {
-            case "section":
-              return <SectionBlock key={block.sys.id} block={block} />;
-            case "heroSection":
-              return <HeroSection key={block.sys.id} hero={block} />;
-            case "featureItem":
-              return <FeatureItem key={block.sys.id} feature={block} />;
-            case "teamMember":
-              return <TeamMember key={block.sys.id} member={block} />;
-            case "button":
-              return <Button key={block.sys.id} button={block} />;
-            default:
-              return (
-                <div
-                  key={index}
-                  className="p-4 my-4 bg-yellow-100 text-yellow-800 rounded"
-                >
-                  ⚠ Unsupported content type: {typeId}
+          contentBlocks.forEach((block) => {
+            const typeId = block?.sys?.contentType?.sys?.id;
+            if (typeId === "teamMember") {
+              teamMembers.push(block);
+            } else {
+              otherBlocks.push(block);
+            }
+          });
+
+          return (
+            <>
+              {otherBlocks.map((block, index) => {
+                const typeId = block?.sys?.contentType?.sys?.id;
+
+                switch (typeId) {
+                  case "section":
+                    return <SectionBlock key={block.sys.id} block={block} />;
+                  case "heroSection":
+                    return <HeroSection key={block.sys.id} hero={block} />;
+                  case "featureItem":
+                    return <FeatureItem key={block.sys.id} feature={block} />;
+                  case "button":
+                    return <Button key={block.sys.id} button={block} />;
+                  default:
+                    return (
+                      <div
+                        key={index}
+                        className="p-4 my-4 bg-yellow-100 text-yellow-800 rounded"
+                      >
+                        ⚠ Unsupported content type: {typeId}
+                      </div>
+                    );
+                }
+              })}
+
+              {teamMembers.length > 0 && (
+                <div className="mt-12">
+                  <h2 className="text-2xl font-bold text-center text-gray-800 mb-4">
+                    Meet the Team
+                  </h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {teamMembers.map((member) => (
+                      <TeamMember key={member.sys.id} member={member} />
+                    ))}
+                  </div>
                 </div>
-              );
-          }
-        })
+              )}
+            </>
+          );
+        })()
       )}
     </div>
   );
