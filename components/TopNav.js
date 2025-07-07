@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 
 const menuConfig = [
   {
@@ -58,12 +57,6 @@ const menuConfig = [
 ];
 
 export default function TopNav() {
-  const [openMenu, setOpenMenu] = useState(null);
-
-  const toggleMenu = (menuLabel) => {
-    setOpenMenu((prev) => (prev === menuLabel ? null : menuLabel));
-  };
-
   return (
     <nav className="bg-white px-6 py-4 border-b border-gray-200 shadow-sm z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
@@ -77,40 +70,34 @@ export default function TopNav() {
           {/* Navigation menus */}
           <ul className="flex space-x-8">
             {menuConfig.map((menu) => (
-              <li key={menu.label} className="relative">
-                <button
-                  onClick={() => toggleMenu(menu.label)}
-                  className="text-gray-700 font-semibold hover:text-blue-600 transition"
-                >
+              <li key={menu.label} className="relative group">
+                <span className="cursor-pointer text-gray-700 font-semibold hover:text-blue-600 transition">
                   {menu.label}
-                </button>
+                </span>
 
-                {/* Dropdown */}
-                {openMenu === menu.label && (
-                  <ul className="absolute top-full left-0 mt-2 w-56 bg-white border border-gray-200 shadow-lg rounded-md z-50">
-                    {menu.links.map((link) => (
-                      <li key={link.label}>
-                        {link.external ? (
-                          <a
-                            href={link.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
-                          >
-                            {link.label}
-                          </a>
-                        ) : (
-                          <Link
-                            href={link.href}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
-                          >
-                            {link.label}
-                          </Link>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                )}
+                <ul className="absolute top-full left-0 mt-2 w-56 bg-white border border-gray-200 shadow-lg rounded-md z-50 opacity-0 invisible group-hover:visible group-hover:opacity-100 transition-opacity duration-200">
+                  {menu.links.map((link) => (
+                    <li key={link.label}>
+                      {link.external ? (
+                        <a
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
+                        >
+                          {link.label}
+                        </a>
+                      ) : (
+                        <Link
+                          href={link.href}
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
+                        >
+                          {link.label}
+                        </Link>
+                      )}
+                    </li>
+                  ))}
+                </ul>
               </li>
             ))}
           </ul>
