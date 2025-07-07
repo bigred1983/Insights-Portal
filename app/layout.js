@@ -23,17 +23,17 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-      <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+        <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-gray-900`}
       >
         <SideMenu />
 
-        {/* ✅ Top bar with Contentful logo */}
+        {/* ✅ Top bar with Contentful logo and nav */}
         <div className="pl-0 md:pl-72">
-          <div className="bg-white border-b border-gray-200 px-6 py-4 flex items-center">
-            <Link href="/">
+          <header className="bg-white px-6 py-4 flex justify-between items-center">
+            <Link href="/" className="flex items-center">
               <Image
                 src="/Contentful_Logo_2024_Dark.png"
                 alt="Contentful Logo"
@@ -42,12 +42,25 @@ export default function RootLayout({ children }) {
                 priority
               />
             </Link>
-          </div>
+
+            {/* Optional nav links - uncomment if needed */}
+            {/* <nav className="hidden md:flex space-x-6">
+              <Link href="/insights" className="text-gray-700 hover:text-blue-600 transition">
+                📊 Insights
+              </Link>
+              <Link href="/dashboards" className="text-gray-700 hover:text-blue-600 transition">
+                📈 Dashboards
+              </Link>
+              <Link href="/about" className="text-gray-700 hover:text-blue-600 transition">
+                ℹ️ About
+              </Link>
+            </nav> */}
+          </header>
         </div>
 
         {/* ✅ Page content */}
         <main className="pt-6 md:pt-10 pl-0 md:pl-72 transition-all duration-300">
-         {children}
+          {children}
         </main>
       </body>
     </html>
