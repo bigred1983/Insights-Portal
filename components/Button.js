@@ -9,7 +9,7 @@ export default function Button({ button }) {
     : null;
 
   return (
-    <div className="text-center">
+    <div className="text-center flex flex-col items-center">
       {/* Optional Image */}
       {imageUrl && (
         <img
@@ -19,10 +19,10 @@ export default function Button({ button }) {
         />
       )}
 
-      {/* Button */}
+      {/* Fixed-width Button */}
       <a
         href={url}
-        className="inline-block border-2 border-black px-8 py-4 text-lg font-semibold text-black bg-white rounded-lg shadow hover:bg-gray-100 transition"
+        className="inline-block w-full min-w-[14rem] text-center border-2 border-black px-8 py-4 text-lg font-semibold text-black bg-white rounded-lg shadow hover:bg-gray-100 transition"
       >
         {label}
       </a>

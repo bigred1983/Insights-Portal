@@ -1,7 +1,5 @@
 "use client";
 
-// Minor formatting update for clean GitHub commit.
-
 import Image from "next/image";
 
 export default function TeamMember({ member }) {
@@ -10,7 +8,7 @@ export default function TeamMember({ member }) {
     : null;
 
   return (
-    <div className="bg-white text-center p-6 rounded-2xl shadow-md w-full h-full">
+    <div className="bg-white text-center p-6 rounded-2xl shadow-md w-[250px] h-full">
       {imageUrl ? (
         <div className="w-[150px] h-[150px] rounded-full overflow-hidden mx-auto mb-4">
           <Image
