@@ -1,7 +1,6 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import SideMenu from "@/components/SideMenu";
-import TopNav from "@/components/TopNav"; // ✅ Import the new nav bar
+import TopNav from "@/components/TopNav";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -19,21 +18,15 @@ export default function RootLayout({ children }) {
       <head>
         <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
       </head>
-      <body
-        className={`${inter.variable} font-sans antialiased bg-white text-gray-900`}
-      >
-        <SideMenu />
+      <body className={`${inter.variable} font-sans antialiased bg-white text-gray-900`}>
+        <TopNav />
 
-        {/* ✅ Top navigation bar with logo + dropdowns */}
-        <div className="pl-0 md:pl-72">
-          <TopNav />
+        <div className="pl-0">
+          <main className="pt-6 md:pt-10 pl-0 transition-all duration-300">
+            {children}
+          </main>
         </div>
-
-        {/* ✅ Page content */}
-        <main className="pt-6 md:pt-10 pl-0 md:pl-72 transition-all duration-300">
-          {children}
-        </main>
-      </body>
+    </body>
     </html>
   );
 }
