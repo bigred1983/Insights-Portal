@@ -33,9 +33,10 @@ const menuConfig = [
   {
     label: "Resources",
     links: [
-      { label: "Tableau", href: "https://tableau.com", external: true },
-      { label: "Atlan", href: "https://atlan.com", external: true },
-      { label: "Training Materials", href: "/training-materials" },
+      { label: "Tableau", href: "https://prod-useast-b.online.tableau.com/#/site/contentful/explore?:iid=1", external: true },
+      { label: "Atlan", href: "https://contentful.atlan.com", external: true },
+      { label: "Request Tool Access", href: "https://contentful.atlassian.net/servicedesk/customer/portal/2/group/23/create/619", external: true},
+      { label: "Training Materials", href: "https://sites.google.com/contentful.com/data-team/insights-portal/data-fluency/data-vizualisation/tableau-training-materials", external: true },
     ],
   },
 ];
