@@ -45,8 +45,8 @@ export default function FeatureItem({ feature }) {
         </div>
       )}
 
-      {/* Content (Right on desktop) */}
-      <div className="md:w-1/2 flex flex-col justify-start">
+      {/* Content */}
+      <div className={`${imageUrl ? "md:w-1/2" : "w-full"} flex flex-col justify-start`}>
         <h2 className="text-2xl font-bold text-gray-900 mb-3 tracking-tight">
           {title || "No Title"}
         </h2>
