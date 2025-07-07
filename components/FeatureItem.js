@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
+import { BLOCKS } from "@contentful/rich-text-types";
 
 export default function FeatureItem({ feature }) {
   const { title, description, image, buttons, destinationUrl } = feature.fields;
@@ -10,6 +11,26 @@ export default function FeatureItem({ feature }) {
     : null;
 
   const isRichText = description?.nodeType === "document";
+
+  const renderOptions = {
+    renderNode: {
+      [BLOCKS.PARAGRAPH]: (node, children) => (
+        <p className="mb-4 text-gray-700 leading-relaxed">{children}</p>
+      ),
+      [BLOCKS.HEADING_2]: (node, children) => (
+        <h2 className="text-xl font-semibold text-gray-900 mb-3">{children}</h2>
+      ),
+      [BLOCKS.HEADING_3]: (node, children) => (
+        <h3 className="text-lg font-medium text-gray-900 mb-2">{children}</h3>
+      ),
+      [BLOCKS.UL_LIST]: (node, children) => (
+        <ul className="list-disc pl-6 mb-4">{children}</ul>
+      ),
+      [BLOCKS.LIST_ITEM]: (node, children) => (
+        <li className="mb-1 text-gray-700">{children}</li>
+      ),
+    },
+  };
 
   return (
     <div className="flex flex-col md:flex-row bg-white border border-gray-200 rounded-2xl shadow-lg p-8 my-8">
@@ -52,7 +73,9 @@ export default function FeatureItem({ feature }) {
         </h2>
 
         <div className="text-base text-gray-700 mb-4 leading-relaxed">
-          {isRichText ? documentToReactComponents(description) : description}
+          {isRichText
+            ? documentToReactComponents(description, renderOptions)
+            : description}
         </div>
 
         {buttons?.length > 0 && (
