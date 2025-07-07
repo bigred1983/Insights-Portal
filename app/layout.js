@@ -35,7 +35,7 @@ export default function RootLayout({ children }) {
           <div className="bg-white border-b border-gray-200 px-6 py-4 flex items-center">
             <Link href="/">
               <Image
-                src="/contentful-logo.svg"
+                src="/Contentful_Logo_2024_Dark.png"
                 alt="Contentful Logo"
                 width={150}
                 height={40}
