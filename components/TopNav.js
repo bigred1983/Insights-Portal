@@ -70,15 +70,16 @@ export default function TopNav() {
 
         {/* Nav links and search */}
         <div className="flex items-center space-x-8">
-          {/* Navigation menus */}
           <ul className="flex space-x-8">
             {menuConfig.map((menu) => (
               <li key={menu.label} className="relative group">
+                {/* Parent container keeps hover state alive */}
                 <div className="cursor-pointer text-gray-700 font-semibold hover:text-blue-600 transition">
                   {menu.label}
                 </div>
 
-                <div className="absolute top-full left-0 mt-2 w-56 bg-white border border-gray-200 shadow-lg rounded-md z-50 opacity-0 invisible group-hover:visible group-hover:opacity-100 transition-opacity duration-200">
+                {/* Dropdown stays within hoverable container */}
+                <div className="absolute top-full left-0 w-56 bg-white border border-gray-200 shadow-lg rounded-md z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                   <ul className="py-2">
                     {menu.links.map((link) => (
                       <li key={link.label}>
