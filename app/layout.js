@@ -26,7 +26,7 @@ export default function RootLayout({ children }) {
       <link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#F9FAFB] text-gray-900`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-gray-900`}
       >
         <SideMenu />
 
