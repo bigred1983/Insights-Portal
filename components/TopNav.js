@@ -25,9 +25,7 @@ const menuConfig = [
   },
   {
     label: "Use Cases",
-    links: [
-      { label: "Highlights", href: "/team-highlights" },
-    ],
+    links: [{ label: "Highlights", href: "/team-highlights" }],
   },
   {
     label: "Resources",
@@ -49,7 +47,8 @@ const menuConfig = [
       },
       {
         label: "Training Materials",
-        href: "https://sites.google.com/contentful.com/data-team/insights-portal/data-fluency/data-vizualisation/tableau-training-materials",
+        href:
+          "https://sites.google.com/contentful.com/data-team/insights-portal/data-fluency/data-vizualisation/tableau-training-materials",
         external: true,
       },
     ],
@@ -62,7 +61,11 @@ export default function TopNav() {
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         {/* Logo */}
         <Link href="/" className="text-xl font-bold text-gray-800">
-          <img src="/Contentful_Logo_2024_Dark.png" alt="Logo" className="h-10 w-auto" />
+          <img
+            src="/Contentful_Logo_2024_Dark.png"
+            alt="Logo"
+            className="h-10 w-auto"
+          />
         </Link>
 
         {/* Nav links and search */}
@@ -71,33 +74,35 @@ export default function TopNav() {
           <ul className="flex space-x-8">
             {menuConfig.map((menu) => (
               <li key={menu.label} className="relative group">
-                <span className="cursor-pointer text-gray-700 font-semibold hover:text-blue-600 transition">
+                <div className="cursor-pointer text-gray-700 font-semibold hover:text-blue-600 transition">
                   {menu.label}
-                </span>
+                </div>
 
-                <ul className="absolute top-full left-0 mt-2 w-56 bg-white border border-gray-200 shadow-lg rounded-md z-50 opacity-0 invisible group-hover:visible group-hover:opacity-100 transition-opacity duration-200">
-                  {menu.links.map((link) => (
-                    <li key={link.label}>
-                      {link.external ? (
-                        <a
-                          href={link.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
-                        >
-                          {link.label}
-                        </a>
-                      ) : (
-                        <Link
-                          href={link.href}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
-                        >
-                          {link.label}
-                        </Link>
-                      )}
-                    </li>
-                  ))}
-                </ul>
+                <div className="absolute top-full left-0 mt-2 w-56 bg-white border border-gray-200 shadow-lg rounded-md z-50 opacity-0 invisible group-hover:visible group-hover:opacity-100 transition-opacity duration-200">
+                  <ul className="py-2">
+                    {menu.links.map((link) => (
+                      <li key={link.label}>
+                        {link.external ? (
+                          <a
+                            href={link.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
+                          >
+                            {link.label}
+                          </a>
+                        ) : (
+                          <Link
+                            href={link.href}
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
+                          >
+                            {link.label}
+                          </Link>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </li>
             ))}
           </ul>
