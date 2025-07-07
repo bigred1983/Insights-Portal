@@ -1,8 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import SideMenu from "@/components/SideMenu";
-import Image from "next/image";
-import Link from "next/link";
+import TopNav from "@/components/TopNav"; // ✅ Import the new nav bar
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,32 +29,9 @@ export default function RootLayout({ children }) {
       >
         <SideMenu />
 
-        {/* ✅ Top bar with Contentful logo and nav */}
+        {/* ✅ Top navigation bar with logo + dropdowns */}
         <div className="pl-0 md:pl-72">
-          <header className="bg-white px-6 py-4 flex justify-between items-center">
-            <Link href="/" className="flex items-center">
-              <Image
-                src="/Contentful_Logo_2024_Dark.png"
-                alt="Contentful Logo"
-                width={150}
-                height={40}
-                priority
-              />
-            </Link>
-
-            {/* Optional nav links - uncomment if needed */}
-            {/* <nav className="hidden md:flex space-x-6">
-              <Link href="/insights" className="text-gray-700 hover:text-blue-600 transition">
-                📊 Insights
-              </Link>
-              <Link href="/dashboards" className="text-gray-700 hover:text-blue-600 transition">
-                📈 Dashboards
-              </Link>
-              <Link href="/about" className="text-gray-700 hover:text-blue-600 transition">
-                ℹ️ About
-              </Link>
-            </nav> */}
-          </header>
+          <TopNav />
         </div>
 
         {/* ✅ Page content */}
