@@ -55,6 +55,7 @@ export default function SideMenu() {
       children: [
         "mission-possible",
         "team-toad",
+        "team-highlights",
         "work-with-us",
         "tools",
       ],
