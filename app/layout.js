@@ -22,11 +22,11 @@ export default function RootLayout({ children }) {
         <TopNav />
 
         <div className="pl-0">
-          <main className="pt-6 md:pt-10 pl-0 transition-all duration-300">
+          <main className="pt-6 md:pt-10 pb-24 pl-0 transition-all duration-300">
             {children}
           </main>
         </div>
-    </body>
+      </body>
     </html>
   );
 }
