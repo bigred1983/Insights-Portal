@@ -37,32 +37,39 @@ export default function FeatureItem({ feature }) {
       {/* Image (Left on desktop) */}
       {imageUrl && (
         <div className="md:w-1/2 mb-6 md:mb-0 md:mr-6 flex justify-center items-start">
-          {destinationUrl ? (
-            <a
-              href={destinationUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block w-full"
-            >
+          <div className="relative w-full bg-blue-50 border-4 border-blue-600 rounded-xl overflow-hidden shadow-xl group">
+            {destinationUrl ? (
+              <a
+                href={destinationUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block"
+              >
+                <Image
+                  src={imageUrl}
+                  alt={image?.fields?.title || "Feature Image"}
+                  width={400}
+                  height={300}
+                  className="object-contain w-full h-auto transition-transform duration-300 group-hover:scale-105 group-hover:brightness-110"
+                  unoptimized
+                />
+              </a>
+            ) : (
               <Image
                 src={imageUrl}
                 alt={image?.fields?.title || "Feature Image"}
                 width={400}
                 height={300}
-                className="rounded-xl object-contain max-h-[300px] w-full hover:opacity-90 transition"
+                className="object-contain w-full h-auto transition-transform duration-300 group-hover:scale-105 group-hover:brightness-110"
                 unoptimized
               />
-            </a>
-          ) : (
-            <Image
-              src={imageUrl}
-              alt={image?.fields?.title || "Feature Image"}
-              width={400}
-              height={300}
-              className="rounded-xl object-contain max-h-[300px] w-full"
-              unoptimized
-            />
-          )}
+            )}
+
+            {/* 🏆 Badge */}
+            <div className="absolute top-2 left-2 bg-yellow-400 text-white text-xs font-semibold px-3 py-1 rounded-full shadow">
+              🏆 Dashboard of the Month
+            </div>
+          </div>
         </div>
       )}
 
