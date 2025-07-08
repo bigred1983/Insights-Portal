@@ -64,11 +64,6 @@ export default function FeatureItem({ feature }) {
                 unoptimized
               />
             )}
-
-            {/* 🏆 Badge */}
-            <div className="absolute top-2 left-2 bg-yellow-400 text-white text-xs font-semibold px-3 py-1 rounded-full shadow">
-              🏆 Dashboard of the Month
-            </div>
           </div>
         </div>
       )}
